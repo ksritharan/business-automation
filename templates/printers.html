@@ -1,0 +1,159 @@
+{% extends "main.html" %}
+{% block content %}
+<br />
+<h4 class="noselect page-title">Printers
+<i class="icon icon-plus c-hand" onClick="openModalAdd();" style="font-size: 0.7em;vertical-align: baseline;margin-left:0.5em"></i>
+</h4>
+
+<script src="static/jquery/jquery-3.5.1.slim.min.js"></script>
+
+<div class="divider" ></div>
+{% for printer in printers %}
+  <div class="accordion">
+    <input type="checkbox" id="accordion-{{ loop.index }}" name="accordion-checkbox" hidden>
+    <label class="accordion-header noselect c-hand" for="accordion-{{ loop.index }}">
+      <!--<i class="icon icon-arrow-right"></i>-->
+      <figure class="avatar avatar-lg badge" data-badge="{{ printer.num }}" data-initial="{{ loop.index }}" style="background-color: #f6f7f8; color: #e8c63e;">
+        <!--<img src="static/img/tectle-center.png">-->
+        <i class="avatar-presence {{ printer.css_status }}"></i>
+      </figure>
+      <i class="noselect c-hand" style="font-family: Roboto">{{ printer.printer_ip }}</i>
+    </label>
+    <div class="accordion-body">
+      <!-- Accordions content -->
+      <div class="hero-sm bg-gray">
+        <div class="hero-body printer-info">
+          <br /> 
+          <table>
+            <tr>
+              <td>Printer URL:</td>
+              <td><a href="http://{{ printer.printer_ip }}">{{ printer.printer_ip }}</a></td>
+            </tr>
+            <tr>
+              <td>Printer Status:</td>
+              <td><b style="text-transform: uppercase;vertical-align: middle;">{{ printer.str_status }}</b></td>
+            </tr>
+            <tr>
+              <td>Current Item:</td>
+              <td>{{ printer.current_sku }}</td>
+            </tr>
+            <tr>
+              <td>Current Receipt:</td>
+              <td>{{ printer.current_receipt }}</td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top">Printer Queue:</td>
+              <td>
+                {% for queue_item in printer.queue %}
+                  {{ queue_item.sku }} <br />
+                {% endfor %}
+              </td>
+            </tr>
+          </table>
+          <i class="icon icon-delete c-hand" onClick="openModalDelete({{ printer.id }});"></i>
+          <br />
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+  
+  <div class="modal modal-sm" id="modal-delete">
+    <a href="#close" class="modal-overlay" onClick="closeModalDelete();" aria-label="Close"></a>
+    <div class="modal-container">
+      <div class="modal-header">
+        <a href="#close" class="btn btn-clear float-right" onClick="closeModalDelete();" aria-label="Close"></a>
+        <div class="modal-title h5">Remove this printer?</div>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <input class="form-input" id="input-printer-id" type="hidden" placeholder="192.168.X.XXX">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-error" onClick="sendRemovePrinterRequest();">Remove</button><a class="btn btn-link" href="#close" onClick="closeModalDelete();" aria-label="Close">Close</a>
+      </div>
+    </div>
+  </div>  
+  <div class="modal modal-sm" id="modal-add">
+    <a href="#close" class="modal-overlay" onClick="closeModalAdd();" aria-label="Close"></a>
+    <div class="modal-container">
+      <div class="modal-header">
+        <a href="#close" class="btn btn-clear float-right" onClick="closeModalAdd();" aria-label="Close"></a>
+        <div class="modal-title h5">Add Printer</div>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label class="form-label" for="input-ip">Printer IP</label>
+            <input class="form-input" id="input-ip" type="text" placeholder="192.168.X.XXX">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onClick="sendAddPrinterRequest();">Add</button><a class="btn btn-link" href="#close" onClick="closeModalAdd();" aria-label="Close">Close</a>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    function openModalDelete(printer_id) {
+      $("#modal-delete").addClass("active");
+      $("#input-printer-id").val(printer_id);
+    }
+    function closeModalDelete() {
+      $("#modal-delete").removeClass("active");
+    }
+    function openModalAdd() {
+      $("#modal-add").addClass("active");
+    }
+    function closeModalAdd() {
+      $("#modal-add").removeClass("active");
+    }
+    function sendAddPrinterRequest() {
+      var ipAddress = $("#input-ip").val();
+      var ipREGEX = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
+      var testResult = ipREGEX.test(ipAddress);
+      if (testResult == false) {
+        alert('Please enter a valid ip address in the form of XXX.XXX.XXX.XXX\ne.g. 192.168.2.102');
+      }
+      else {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/printers/add', true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() { // Call a function when the state changes.
+          if (this.readyState === XMLHttpRequest.DONE) {
+            if (this.status === 200) {
+              $("#input-ip").val("");
+              closeModalAdd();
+              location.reload();
+            }
+            else {
+              alert('Error adding printer\n'+this.responseText);
+            }
+          }
+        }
+        xhr.send('ip='+ipAddress);
+      }
+    }
+    function sendRemovePrinterRequest() {
+      var printerId = $("#input-printer-id").val();
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/printers/remove', true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = function() { // Call a function when the state changes.
+        if (this.readyState === XMLHttpRequest.DONE) {
+          if (this.status === 200) {
+            closeModalDelete();
+            location.reload();
+          }
+          else {
+            alert('Error deleting printer\n'+this.responseText);
+          }
+        }
+      }
+      xhr.send('printer_id='+printerId);
+    }
+  </script>
+{% endblock %}

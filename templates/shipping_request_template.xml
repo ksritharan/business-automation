@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<non-contract-shipment xmlns="http://www.canadapost.ca/ws/ncshipment-v4">
+    <requested-shipping-point>M1H2A0</requested-shipping-point>
+    <delivery-spec>
+        {% if data.country == 'US' %}
+            <service-code>USA.SP.AIR</service-code>
+        {% else %}
+            <service-code>DOM.EP</service-code>
+        {% endif %}
+        <sender>
+            <company>Tectle</company>
+            <contact-phone>647-886-0652</contact-phone>
+            <address-details>
+                <address-line-1>495 Brimorton Drive</address-line-1>
+                <city>Toronto</city>
+                <prov-state>ON</prov-state>
+                <postal-zip-code>M1H2E7</postal-zip-code>
+            </address-details>
+        </sender>
+        <destination>
+            <name>{{ data.name }}</name>
+            <client-voice-number>647-886-0652</client-voice-number>
+            <address-details>
+                <address-line-1>{{ data.first_line }}</address-line-1>
+                <address-line-2>{{ data.second_line }}</address-line-2>
+                <city>{{ data.city }}</city>
+                <prov-state>{{ data.state }}</prov-state>
+                <postal-zip-code>{{ data.zip }}</postal-zip-code>
+                <country-code>{{ data.country }}</country-code>
+            </address-details>
+        </destination>
+        <options>
+            <option>
+                <option-code>RTS</option-code>
+            </option>
+        </options>
+        <parcel-characteristics>
+            <weight>{{ data.weight }}</weight>
+            <dimensions>
+                <length>{{ data.length }}</length>
+                <width>{{ data.width }}</width>
+                <height>{{ data.height }}</height>
+            </dimensions>
+        </parcel-characteristics>
+        <notification>
+            <email>{{ data.buyer_email }}</email>
+            <on-shipment>true</on-shipment>
+            <on-exception>true</on-exception>
+            <on-delivery>true</on-delivery>
+        </notification>
+        <preferences>
+            <show-packing-instructions>true</show-packing-instructions>
+        </preferences>
+        {% if data.country == 'US' %}
+        <customs>
+            <currency>USD</currency>
+            <conversion-from-cad>0.85</conversion-from-cad>
+            <reason-for-export>SOG</reason-for-export>
+            <sku-list>
+                {% for item in items %}
+                <item>
+                    <sku>{{ item.sku }}</sku>
+                    <customs-description>{{ item.desc }}</customs-description>
+                    <unit-weight>{{ item.unit_weight }}</unit-weight>
+                    <customs-value-per-unit>{{ item.cad_value }}</customs-value-per-unit>
+                    <customs-number-of-units>{{ item.quantity }}</customs-number-of-units>
+                    <country-of-origin>CA</country-of-origin>
+                    <province-of-origin>ON</province-of-origin>
+                </item>
+                {% endfor %}
+            </sku-list>
+        </customs>
+        {% endif %}
+    </delivery-spec>
+</non-contract-shipment>

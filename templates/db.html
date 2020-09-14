@@ -1,0 +1,110 @@
+{% extends "main.html" %}
+{% block content %}
+<br />
+<h2> DATABASE INFO <h2>
+
+<script src="static/jquery/jquery-3.5.1.slim.min.js"></script>
+
+<ul class="tab tab-block">
+  <li class="tab-item" id="plabel">
+    <a href="#" onClick="showPrinters();">Printers</a>
+  </li>
+  <li class="tab-item" id="pqlabel">
+    <a href="#" onClick="showPrinterQueue();">Printer Queue</a>
+  </li>
+  <li class="tab-item" id="uqlabel">
+    <a href="#" onClick="showUnassignedQueue();">Unassigned Queue</a>
+  </li>
+</ul>
+
+<div id="printers-table">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        {% for col in printers_cols %}
+          <th>{{ col }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+        {% for row in printers_rows %}
+          <tr>
+            {% for x in row %}
+              <td>{{ x }}</td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div id="printer-queue-table">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        {% for col in printer_queue_cols %}
+          <th>{{ col }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+        {% for row in printer_queue_rows %}
+          <tr>
+            {% for x in row %}
+              <td>{{ x }}</td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div id="unassigned-queue-table">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        {% for col in unassigned_queue_cols %}
+          <th>{{ col }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+        {% for row in unassigned_queue_rows %}
+          <tr>
+            {% for x in row %}
+              <td>{{ x }}</td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    showPrinters();
+  });
+  function showPrinters() {
+    $("#unassigned-queue-table").hide();
+    $("#printer-queue-table").hide();
+    $("#printers-table").show();
+    $("#pqlabel").removeClass("active");
+    $("#uqlabel").removeClass("active");
+    $("#plabel").addClass("active");
+  }
+  function showPrinterQueue() {
+    $("#printers-table").hide();
+    $("#unassigned-queue-table").hide();
+    $("#printer-queue-table").show();
+    $("#plabel").removeClass("active");
+    $("#uqlabel").removeClass("active");
+    $("#pqlabel").addClass("active");
+  }
+  function showUnassignedQueue() {
+    $("#printers-table").hide();
+    $("#printer-queue-table").hide();
+    $("#unassigned-queue-table").show();
+    $("#plabel").removeClass("active");
+    $("#pqlabel").removeClass("active");
+    $("#uqlabel").addClass("active");
+  }
+</script>
+{% endblock %}

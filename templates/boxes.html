@@ -1,0 +1,238 @@
+{% extends "main.html" %}
+{% block content %}
+<script src="/static/jquery/jquery-3.5.1.min.js"></script>
+<script src="/static/jquery-ui/jquery-ui.min.js"></script>
+<div style="overflow-x: scroll; height: 100%">
+  <br />
+  <h4 class="noselect page-title">Boxes
+  <i class="icon icon-plus c-hand" onClick="openModalAdd();" style="font-size: 0.7em;vertical-align: baseline;margin-left:0.5em"></i>
+  <button id="update-btn" class="btn btn-sm btn-primary s-rounded" onClick="updateShipping()">Update Shipping Costs</button>
+  </h4>
+  <div class="divider" ></div>
+  <table class="data-table noselect">
+    <thead>
+      <tr>
+        <td>
+          <h5>Type</h5>
+        </td>
+        <td>
+          <h5>Length (cm)</h5>
+        </td>
+        <td>
+          <h5>Width (cm)</h5>
+        </td>
+        <td>
+          <h5>Height (cm)</h5>
+        </td>
+        <td>
+          <h5>Length (in)</h5>
+        </td>
+        <td>
+          <h5>Width (in)</h5>
+        </td>
+        <td>
+          <h5>Height (in)</h5>
+        </td>
+        <td>
+          <h5>Cost</h5>
+        </td>
+        <td>
+          <h5>Weight (kg)</h5>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+      </tr>
+    </thead>
+    {% for box in boxes %}
+    <tr>
+        <td>
+          {{ box.type }}
+        </td>
+        <td>
+          {{ box.length_cm }}
+        </td>
+        <td>
+          {{ box.width_cm }}
+        </td>
+        <td>
+          {{ box.height_cm }}
+        </td>
+        <td>
+          {{ box.length_in }}
+        </td>
+        <td>
+          {{ box.width_in }}
+        </td>
+        <td>
+          {{ box.height_in }}
+        </td>
+        <td>
+          {{ box.cost }}
+        </td>
+        <td>
+          {{ box.weight_kg }}
+        </td>
+      <td>
+        <input id="{{ box.id }}-input-id" type="hidden" value="{{ box.id }}">
+        <input id="{{ box.id }}-input-type" type="hidden" value="{{ box.type }}">
+        <input id="{{ box.id }}-input-length-cm" type="hidden" value="{{ box.length_cm }}">
+        <input id="{{ box.id }}-input-width-cm" type="hidden" value="{{ box.width_cm }}">
+        <input id="{{ box.id }}-input-height-cm" type="hidden" value="{{ box.height_cm }}">
+        <input id="{{ box.id }}-input-length-in" type="hidden" value="{{ box.length_in }}">
+        <input id="{{ box.id }}-input-width-in" type="hidden" value="{{ box.width_in }}">
+        <input id="{{ box.id }}-input-height-in" type="hidden" value="{{ box.height_in }}">
+        <input id="{{ box.id }}-input-cost" type="hidden" value="{{ box.cost }}">
+        <input id="{{ box.id }}-input-weight-kg" type="hidden" value="{{ box.weight_kg }}">
+        <i class="icon icon-edit c-hand" onClick="openModalEdit({{ box.id }});" style="font-size: 0.7em;vertical-align: baseline;margin-left:0.5em"></i>
+      </td>
+      <td>
+        <i class="icon icon-delete c-hand" onClick="openModalDelete({{ box.id }});" style="font-size: 0.7em;vertical-align: baseline;margin-left:0.5em"></i>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% if shipping_costs %}
+  <br />
+  <h4 class="noselect page-title">Shipping Costs
+  </h4>
+  <div class="divider" ></div>
+  <table class="data-table noselect">
+    <thead>
+      <tr>
+        <td rowspan=2>
+          <h5>Weight (kg)</h5>
+        </td>
+        {% for box_type in box_types %}
+          <td colspan=2>
+            <b>Box {{ box_type }}</b>
+          </td>
+        {% endfor %}
+        </td>
+      </tr>
+      <tr>
+        {% for box_type in box_types %}
+          <td>
+            within CA
+          </td>
+          <td>
+            to US
+          </td>
+        {% endfor %}
+      </tr>
+    </thead>
+    {% for shipping_cost in shipping_costs %}
+    <tr style="text-align:right">
+        <td>
+          <b>{{ shipping_cost.weight_kg }}</b>
+        </td>
+        {% for cost_ca, cost_us in shipping_cost.costs %}
+        <td>
+          {{ cost_ca }}
+        </td>
+        <td>
+          {{ cost_us }}
+        </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+  
+  
+</div>
+<div class="modal" id="modal-add">
+  <a href="#close" class="modal-overlay" onClick="closeModalAdd();" aria-label="Close"></a>
+  <div class="modal-container">
+    <div class="modal-header">
+      <a href="#close" class="btn btn-clear float-right" onClick="closeModalAdd();" aria-label="Close"></a>
+      <div class="modal-title h5">Add Box</div>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group">
+          <label class="form-label" for="add-input-type">Type</label>
+          <input class="form-input small-input" id="add-input-type" type="text" placeholder="">
+          <label class="form-label" for="add-input-length-cm">Length (cm)</label>
+          <input class="form-input small-input" id="add-input-length-cm" type="number" min="0" step=".01" placeholder="">
+          <label class="form-label" for="add-input-width-cm">Width (cm)</label>
+          <input class="form-input small-input" id="add-input-width-cm" type="number" min="0" step=".01" placeholder="">
+          <label class="form-label" for="add-input-height-cm">Height (cm)</label>
+          <input class="form-input small-input" id="add-input-height-cm" type="number" min="0" step=".01" placeholder="">
+          <label class="form-label" for="add-input-length-in">Length (in)</label>
+          <input class="form-input small-input" id="add-input-length-in" type="number" min="0" step="1" placeholder="">
+          <label class="form-label" for="add-input-width-in">Width (in)</label>
+          <input class="form-input small-input" id="add-input-width-in" type="number" min="0" step="1" placeholder="">
+          <label class="form-label" for="add-input-height-ine">Height (in)</label>
+          <input class="form-input small-input" id="add-input-height-in" type="number" min="0" step="1" placeholder="">
+          <label class="form-label" for="add-input-cost">Cost</label>
+          <input class="form-input small-input" id="add-input-cost" type="number" min="0" step=".01" placeholder="">
+          <label class="form-label" for="add-input-weight-kg">Weight (kg)</label>
+          <input class="form-input small-input" id="add-input-weight-kg" type="number" min="0" step=".001" placeholder="">
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onClick="sendAddBox();">Add</button><a class="btn btn-link" href="#close" onClick="closeModalAdd();" aria-label="Close">Close</a>
+    </div>
+  </div>
+</div>
+<div class="modal" id="modal-edit">
+  <a href="#close" class="modal-overlay" onClick="closeModalEdit();" aria-label="Close"></a>
+  <div class="modal-container">
+    <div class="modal-header">
+      <a href="#close" class="btn btn-clear float-right" onClick="closeModalEdit();" aria-label="Close"></a>
+      <div class="modal-title h5">Edit Box</div>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group">
+          <input class="form-input small-input" id="edit-input-id" type="hidden" placeholder="">
+          <label class="form-label" for="edit-input-type">Type</label>
+          <input class="form-input small-input" id="edit-input-type" type="text" placeholder="">
+          <label class="form-label" for="edit-input-length-cm">Length (cm)</label>
+          <input class="form-input small-input" id="edit-input-length-cm" type="number" min="0" step=".01" placeholder="">
+          <label class="form-label" for="edit-input-width-cm">Width (cm)</label>
+          <input class="form-input small-input" id="edit-input-width-cm" type="number" min="0" step=".01" placeholder="">
+          <label class="form-label" for="edit-input-height-cm">Height (cm)</label>
+          <input class="form-input small-input" id="edit-input-height-cm" type="number" min="0" step=".01" placeholder="">
+          <label class="form-label" for="edit-input-length-in">Length (in)</label>
+          <input class="form-input small-input" id="edit-input-length-in" type="number" min="0" step="1" placeholder="">
+          <label class="form-label" for="edit-input-width-in">Width (in)</label>
+          <input class="form-input small-input" id="edit-input-width-in" type="number" min="0" step="1" placeholder="">
+          <label class="form-label" for="edit-input-height-in">Height (in)</label>
+          <input class="form-input small-input" id="edit-input-height-in" type="number" min="0" step="1" placeholder="">
+          <label class="form-label" for="edit-input-cost">Cost</label>
+          <input class="form-input small-input" id="edit-input-cost" type="number" min="0" step=".01" placeholder="">
+          <label class="form-label" for="edit-input-weight-kg">Weight (kg)</label>
+          <input class="form-input small-input" id="edit-input-weight-kg" type="number" min="0" step=".001" placeholder="">
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onClick="sendEditBox();">Edit</button><a class="btn btn-link" href="#close" onClick="closeModalEdit();" aria-label="Close">Close</a>
+    </div>
+  </div>
+</div>
+<div class="modal modal-sm" id="modal-delete">
+  <a href="#close" class="modal-overlay" onClick="closeModalDelete();" aria-label="Close"></a>
+  <div class="modal-container">
+    <div class="modal-header">
+      <a href="#close" class="btn btn-clear float-right" onClick="closeModalDelete();" aria-label="Close"></a>
+      <div class="modal-title h5">Remove this box?</div>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group">
+          <input class="form-input" id="input-box-id" type="hidden">
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-error" onClick="sendRemoveBox();">Remove</button><a class="btn btn-link" href="#close" onClick="closeModalDelete();" aria-label="Close">Close</a>
+    </div>
+  </div>
+</div>
+<script src="/static/js/boxes.js"></script>
+{% endblock %}

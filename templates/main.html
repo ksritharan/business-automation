@@ -1,0 +1,91 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/static/css/spectre.css">
+    <link rel="stylesheet" href="/static/css/spectre-exp.css">
+    <link rel="stylesheet" href="/static/css/spectre-icons.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+    <link rel="manifest" href="/static/site.webmanifest">
+  </head>
+  <body>
+    <div class="container">
+      <div class="columns">
+        <div class="column col-1 bg-gray">
+          <div class="tect-menu">
+            <!-- Menu -->
+            <a href="/"><img src="/static/img/tectle-menu.png" class="img-responsive"></a>
+            <ul class="nav">
+              {% if home %}
+              <li class="nav-item active">
+              {% else %}
+              <li class="nav-item">
+              {% endif %}
+                <a href="/">HOME</a>
+              </li>
+              {% if orders %}
+              <li class="nav-item active">
+              {% else %}
+              <li class="nav-item">
+              {% endif %}
+                <a href="/orders">ORDERS</a>
+              </li>
+              {% if home or orders %}
+              <li class="nav-item">
+              {% else %}
+              <li class="nav-item active">
+              {% endif %}
+                <a class="noselect nohoverlink">Configuration</a>
+                  <ul class="nav">
+                  {% if products_page %}
+                  <li class="nav-item active">
+                  {% else %}
+                  <li class="nav-item">
+                  {% endif %}
+                    <a href="/products">PRODUCTS</a>
+                  </li>
+                  {% if boxes %}
+                  <li class="nav-item active">
+                  {% else %}
+                  <li class="nav-item">
+                  {% endif %}
+                    <a href="/boxes">BOXES</a>
+                  </li>
+                  {% if packaging_page %}
+                  <li class="nav-item active">
+                  {% else %}
+                  <li class="nav-item">
+                  {% endif %}
+                    <a href="/packaging">PACKAGING</a>
+                  </li>
+                  {% if addprinters %}
+                  <li class="nav-item active">
+                  {% else %}
+                  <li class="nav-item">
+                  {% endif %}
+                    <a href="/printers">PRINTERS</a>
+                  </li>
+                  <!--
+                  {% if db %}
+                  <li class="nav-item active">
+                  {% else %}
+                  <li class="nav-item">
+                  {% endif %}
+                    <a href="/db">DATABASE INFO</a>
+                  </li>
+                  -->
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="column col-11 content">
+        <!-- Info -->
+        {% block content %}
+        {% endblock %}
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

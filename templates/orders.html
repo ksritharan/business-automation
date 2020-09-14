@@ -1,0 +1,85 @@
+{% extends "main.html" %}
+{% block content %}
+<script src="/static/jquery/jquery-3.5.1.min.js"></script>
+<script src="/static/jquery-ui/jquery-ui.min.js"></script>
+<div style="overflow-x: scroll; height: 100%">
+  <br />
+  <h4 class="noselect page-title">Manage Orders
+    <button id="update-btn" class="btn btn-sm btn-primary s-rounded" onClick="updateReceipts()">Fetch New Orders</button>
+  </h4>
+  <div class="divider" ></div>
+  <div class="form-group">
+    <label class="form-label" for="order-status-select">Order Status</label>
+    <select id="order-status-select" class="form-select">
+      <option value="/orders">All Orders</option>
+      <option value="/orders/0">Pending</option>
+      <option value="/orders/1">Printed</option>
+      <option value="/orders/2">Completed</option>
+    </select>
+  </div>
+  <table class="data-table noselect">
+    <thead>
+      <tr>
+        <td>
+          <h5>Receipt ID</h5>
+        </td>
+        <td>
+          <h5>Name</h5>
+        </td>
+        <td>
+          <h5>Country</h5>
+        </td>
+        <td>
+          <h5>Status</h5>
+        </td>
+        <td>
+          <h5>Shipping Label</h5>
+        </td>
+        <td>
+          <h5>Tracking Pin</h5>
+        </td>
+        <td>
+          <h5>Send Tracking Information</h5>
+        </td>
+      </tr>
+    </thead>
+    {% for receipt in receipts %}
+    <tr>
+      <td>
+        {{ receipt.receipt_id }}
+      </td>
+      <td>
+        {{ receipt.name }}
+      </td>
+      <td>
+        {{ receipt.country }}
+      </td>
+      <td>
+        <span class="label label-{{ receipt.css_status }} receipt-status">{{ receipt.html_status }}</span>
+      </td>
+      <td>
+        {% if receipt.shipping_label %}
+          <a target="_blank" href="{{ receipt.shipping_label }}">Get PDF</a>
+        {% else %}
+          <button id="shipping-btn-{{ receipt.receipt_id }}" class="btn btn-sm btn-primary s-rounded" onClick="getShipping({{ receipt.receipt_id }})">Create Shipping Label</button>
+          <sup>{{ receipt.num_completed_labels }}</sup>&frasl;<sub>{{ receipt.total_num_labels }}</sub>
+        {% endif %}
+      </td>
+      <td>
+        {{ receipt.tracking_pin }}
+      </td>
+      <td>
+        {% if receipt.tracking_pin %}
+          {% if receipt.html_status == 'completed' %}
+            <i>Tracking Information Sent</i>
+          {% else %}
+            <button id="complete-btn-{{ receipt.receipt_id }}" class="btn btn-sm btn-primary s-rounded" onClick="completeOrder({{ receipt.receipt_id }})">Send Tracking Information</button>
+          {% endif %}
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+<script src="/static/js/orders.js"></script>
+{% endblock %}

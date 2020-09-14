@@ -1,0 +1,121 @@
+{% extends "main.html" %}
+{% block content %}
+<script src="static/jquery/jquery-3.5.1.min.js"></script>
+<script src="static/jquery-ui/jquery-ui.min.js"></script>
+<div style="overflow-x: scroll; height: 100%">
+  <br />
+  <h4 class="noselect page-title">Manage Queue
+    <div class="loading-section">
+      <button id="load-btn" class="btn btn-primary btn-action btn-sm s-circle" style="display: none;" onClick="startLoad()">
+        <i class="icon icon-refresh"></i>
+      </button>
+      <div class="status-loader loading c-hand" style="display: inline; margin-left: 0.75em;" onClick="stopLoad()"></div>
+    </div>
+  </h4>
+  <div class="divider" ></div>
+  
+  <div class="form-autocomplete">
+    <div class="form-autocomplete-input form-input">
+      <input class="form-input" id="receipt-search" type="text" placeholder="Receipt Search">
+    </div>
+    <ul class="menu" id="autocomplete-list">
+    </ul>
+  </div>
+
+  <table class="data-table queue-table noselect">
+    <thead>
+      <tr>
+        <td>
+          <h5>Pending Receipts</h5>
+        </td>
+        <td>
+          <h5>Completed Receipts</h5>
+        </td>
+        <td>
+          <h5>Unassigned Queue</h5>
+        </td>
+        {% for printer in printers %}
+          <td>
+            <div class="headers">
+              <figure id="printer-{{ printer.id }}" class="avatar avatar-lg badge" data-badge="{{ printer.num }}" data-initial="{{ loop.index }}" style="background-color: #f6f7f8; color: #e8c63e;">
+                <!--<img src="static/img/tectle-center.png">-->
+                <i class="avatar-presence {{ printer.css_status }}"></i>
+              </figure>
+              <i class="noselect" style="font-family: Roboto">{{ printer.printer_ip }}</i>
+            </div>
+            {% if printer.is_printing == 0 %}
+            <div class="progress-bar" id="progress-bar-{{ printer.id }}"  style="display: none;">
+            {% else %}
+            <div class="progress-bar" id="progress-bar-{{ printer.id }}">
+            {% endif %}
+              <progress class="progress" value="{{ printer.progress }}" max="100"></progress>
+              <div class="progress-info">
+                <i class="current-sku tooltip" data-tooltip="{{ printer.current_receipt }}">{{ printer.current_sku }}</i>
+                <i class="percent">{{ printer.progress }}%</i>
+              </div>
+            </div>
+          </td>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      {% for printer in printers %}
+      <td style="text-align: center">
+        {% if printer.is_printing == 0 %}
+          <button id="print-btn-{{ printer.id }}" class="btn btn-sm btn-success print-btn" onClick="printNext({{ printer.id }})">Print Next</button>
+        {% else %}
+          <button id="print-btn-{{ printer.id }}" class="btn btn-sm disabled btn-warning" onClick="printNext({{ printer.id }})">Printer Busy</button>
+        {% endif %}
+      </td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td>
+      {% for receipt in receipt_list %}
+        <div class="receipt">
+          <i class="noselect" style="font-family: Roboto">{{ receipt.receipt_id }}</i>
+          <figure id="receipt-{{ receipt.receipt_id }}" class="avatar avatar-xs badge" data-badge="{{ receipt.num }}" data-initial="{{ loop.index }}" style="background-color: #f6f7f8; color: #e8c63e;">
+          </figure>
+        </div>
+      {% endfor %}
+      </td>
+      <td>
+      <div id="completed-item-list">
+      {% for item in completed_receipts %}
+        <div class="completed-item">
+          <i class="noselect" style="font-family: Roboto">{{ item.receipt_id }}</i>
+        </div>
+      {% endfor %}
+      </div>
+      </td>
+      <td id="unassigned-item-list" class="sortable connectedSortable">
+        <input type="hidden" name="printer_id" value="None" />
+        {% for row in unassigned_queue %}
+          <li class="noselect tooltip" data-tooltip="{{ row.receipt_id }}">
+            {{ row.sku }}
+            <input type="hidden" name="id" value="{{ row.id }}" />
+          </li>
+        {% endfor %}
+      </td>
+      {% for printer in printers %}
+      <td class="sortable connectedSortable">
+        <input type="hidden" name="printer_id" value="{{ printer.id }}" />
+        {% for queue_item in printer.queue %}
+          <li class="noselect tooltip" data-tooltip="{{ queue_item.receipt_id }}">
+            {{ queue_item.sku }}
+            <input type="hidden" name="id" value="{{ queue_item.id }}" />
+          </li>
+        {% endfor %}
+      </td>
+      {% endfor %}
+      
+    </tr>
+  </table>
+  <input type="hidden" id="receipts" value="{{ receipts }}" />
+</div>
+
+<script src="static/js/home.js"></script>
+{% endblock %}

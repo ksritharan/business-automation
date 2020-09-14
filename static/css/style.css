@@ -1,0 +1,119 @@
+.tect-menu {
+    padding-top: 2em;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #455060;
+    height: 100vh;
+}
+
+.content {
+}
+
+.accordion .icon {
+   vertical-align: middle; 
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.nav .nav-item a.nohoverlink:focus,
+.nav .nav-item a.nohoverlink:hover {
+    color: #455060;
+}
+
+.page-title {
+    margin-left: 0.25em;
+}
+
+.printer-info {
+    padding-left: 1em;
+}
+
+.headers {
+    white-space: nowrap;
+}
+
+.progress {
+    margin-top: 0.4em;
+}
+
+li {
+  list-style-type: none;
+}
+
+.sku-highlight {
+    background-color: #ffd86b;
+}
+
+.form-autocomplete {
+    margin-bottom: 0.5em;
+}
+
+.print-btn{
+    width: 100%;
+}
+
+.receipt {
+    margin-right: 0.2em;
+}
+
+.loading-section {
+    display: inline;
+}
+
+.status-loader {
+    display: inline;
+    margin-left: 0.75em;
+    pointer-events: auto;
+}
+
+#load-btn {
+    vertical-align: top;
+}
+
+.s-rounded {
+    border-radius: .3em;
+}
+
+.receipt-status {
+    text-transform: capitalize;
+}
+
+.small-input {
+    display: inline;
+    width: auto;
+}
+
+.data-table {
+    border-collapse: collapse;
+}
+
+.queue-table tbody tr td {
+    vertical-align: top;
+}
+
+.data-table tbody tr td {
+    padding: 0.4em 0.4em 0.4em 0.4em;
+    height: 100%;
+    border: 1px solid #c9c8c7;
+    white-space: nowrap;
+}
+
+.data-table tbody tr td li {
+    padding-left: 0.4em;
+}
+
+.data-table thead tr td {
+    padding: 0.4em 0.4em 0.4em 0.4em;
+    vertical-align: middle;
+    height: 100%;
+    border: 1px solid #c9c8c7;
+}
