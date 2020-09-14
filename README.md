@@ -1,4 +1,4 @@
-# business-automation
+# Business Automation
 
 [About](#about)  
 &nbsp;&nbsp;[Description](#description)  
@@ -16,7 +16,8 @@
 
 ## About
 ### Description
-This project was created to help a small business working out of Etsy to automate their operations. It is a webserver that aids in managing orders, package calculations, creating shipping labels, sending tracking information, and managing manufacturing.
+This project was created to help a small business called Tectle to automate their operations. It is a webserver that aids in managing orders, package calculations, creating shipping labels, sending tracking information, and managing manufacturing.
+![tectle](https://github.com/ksritharan/business-automation/blob/master/static/img/tectle-menu.png)
 
 ### Technologies
 This project was built using Python 3.8, Flask, sqlite3, jQuery, and [Spectre](https://github.com/picturepan2/spectre).
@@ -59,15 +60,24 @@ Access the page at [127.0.0.1:8080](127.0.0.1:8080)
 ## Features
 ### OAuth
 When loading the site for the first time you will be redirected to Etsy to confirm that the application can use its API to interact with your shop.
+![oauth_img](https://raw.githubusercontent.com/ksritharan/business-automation/master/screenshots/etsy_login.PNG)
 ### Orders
 From the order mangement page we can fetch new orders, monitor their status, create shipping labels, and send tracking information back to Etsy.
+![orders_img](https://raw.githubusercontent.com/ksritharan/business-automation/master/screenshots/manage_orders.PNG)
 ### Queue
 From the queue management page we can see what items from the orders need to be printed. We can drag and drop items to a specific printer and start it to print the next item.
 We can see the status of each of the prints and the availability of the printer. Once all the items for a receipt have been printed it is moved to the completed receipts column, and its status on the order management page will be updated to Printed.
+![queue1_img](https://raw.githubusercontent.com/ksritharan/business-automation/master/screenshots/manage_printere_queue.PNG)
+![queue2_img](https://raw.githubusercontent.com/ksritharan/business-automation/master/screenshots/manage_printere_queue_2.PNG)
+![queue3_img](https://raw.githubusercontent.com/ksritharan/business-automation/master/screenshots/manage_printere_queue_3.PNG)
+![queue4_img](https://raw.githubusercontent.com/ksritharan/business-automation/master/screenshots/manage_printere_queue_4.PNG)
+![queue5_img](https://raw.githubusercontent.com/ksritharan/business-automation/master/screenshots/manage_printere_queue_5.PNG)
 ### Products
 Here we configure what the package class is for the items on our Etsy page. A package class is simply a group of products that can be packaged the same way. For example, anything that is PB75*** refers to a planter that is 2.75 inches tall, for the purposes of packaging we can treat all variations of this as a "Small", and simplifies our packaging process. The SKUs are in reference to the SKUs of our Etsy items and are automatically decoded to build the Products table.
+![products_img](https://raw.githubusercontent.com/ksritharan/business-automation/master/screenshots/product_config.PNG)
 ### Boxes
 Here we can configure what boxes can be used in the packaging process. The "Update Shipping Costs" button performs multiple calls to the Canada Post API to determine the cost of shipping various weights of each box and the cost using Express Post/Small Packet (under 2kg). Note that this function may take long to complete and is re-runnable (such that it will populate values it does not have).
+![box_img](https://raw.githubusercontent.com/ksritharan/business-automation/master/screenshots/box_config.PNG)
 ### Packaging
 Here we configure different package configurations. The purpose of this page is to help construct the "bins" for the bin packing problem. Each row refers to package combinations for which we have the maximum allowed (fitting by size) for each package class.  
 Huh?  
@@ -81,5 +91,7 @@ Well, the code only knows to subtract not add, so including only one of the conf
 Aha! So if there is a combination that can't already be represented by a config and its implied configs, then it should be added!  
 Ding! Ding!
 
+![package_img](https://raw.githubusercontent.com/ksritharan/business-automation/master/screenshots/package_config.png)
 ### Printers
 Here we can add, edit, and remove printers by URL. We can see their current status in the database (not realtime) and information about them.
+![printers_img](https://raw.githubusercontent.com/ksritharan/business-automation/master/screenshots/printer_config.PNG)
