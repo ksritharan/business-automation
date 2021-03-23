@@ -9,8 +9,8 @@ def main():
     cur = conn.cursor()
     build_schema(cur)
     create_test_data(cur, num_printers, num_fake_receipts, max_num_items, max_quantity)
-    update_package_configs(cur)
     #fetch_shipping_costs(cur)
+    update_package_configs(cur)
     conn.commit()
     
 
