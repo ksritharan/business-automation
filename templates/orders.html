@@ -61,7 +61,7 @@
         {% if receipt.shipping_label %}
           <a target="_blank" href="{{ receipt.shipping_label }}">Get PDF</a>
         {% else %}
-          <button id="shipping-btn-{{ receipt.receipt_id }}" class="btn btn-sm btn-primary s-rounded" onClick="getShipping({{ receipt.receipt_id }})">Create Shipping Label</button>
+          <button id="shipping-btn-{{ receipt.receipt_id }}" class="btn btn-sm btn-primary s-rounded" onClick="getShipping('{{ receipt.receipt_id }}')">Create Shipping Label</button>
           <sup>{{ receipt.num_completed_labels }}</sup>&frasl;<sub>{{ receipt.total_num_labels }}</sub>
         {% endif %}
       </td>
@@ -73,7 +73,7 @@
           {% if receipt.html_status == 'completed' %}
             <i>Tracking Information Sent</i>
           {% else %}
-            <button id="complete-btn-{{ receipt.receipt_id }}" class="btn btn-sm btn-primary s-rounded" onClick="completeOrder({{ receipt.receipt_id }})">Send Tracking Information</button>
+            <button id="complete-btn-{{ receipt.receipt_id }}" class="btn btn-sm btn-primary s-rounded" onClick="completeOrder('{{ receipt.receipt_id }}')">Send Tracking Information</button>
           {% endif %}
         {% endif %}
       </td>

@@ -64,11 +64,11 @@ def printer_status(printer_id):
 def orders():
     return do_orders()
     
-@app.route('/orders/shipping/<int:receipt_id>', methods=['POST'])
+@app.route('/orders/shipping/<string:receipt_id>', methods=['POST'])
 def shipping_label(receipt_id):
     return do_shipping_label(receipt_id)
 
-@app.route('/orders/complete/<int:receipt_id>', methods=['POST'])
+@app.route('/orders/complete/<string:receipt_id>', methods=['POST'])
 def order_complete(receipt_id):
     return do_order_complete(receipt_id)
 
@@ -204,9 +204,16 @@ def get_open_receipts():
     limit = int(request.args.get('limit', '50'))
     offset = int(request.args.get('offset', '0'))
     return do_open_receipts(limit, offset)
-@app.route('/receipts/<int:receipt_id>/transactions')
+@app.route('/receipts/<string:receipt_id>/transactions')
 def get_transactions(receipt_id):
     return do_transactions(receipt_id)
+
+#webflow
+@app.route('/sites/orders')
+def get_unfulfilled_receipts():
+    limit = int(request.args.get('limit', '50'))
+    offset = int(request.args.get('offset', '0'))
+    return do_unfulfilled_receipts(limit, offset)
     
 def worker_thread():
     config = load_config_non_flask()
