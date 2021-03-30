@@ -38,6 +38,12 @@ def printers_add():
 def printers_remove():
     printer_id = request.form.get('printer_id')
     return do_remove_printers(printer_id)
+
+@app.route('/printer/color', methods=['POST'])
+def printer_color():
+    printer_id = request.form.get('printerId')
+    color = request.form.get('color')
+    return do_color_printers(printer_id, color)
     
 @app.route('/db')
 def db_info():
@@ -59,18 +65,57 @@ def printer_print(printer_id):
 @app.route('/printer/<int:printer_id>/status', methods=['GET'])
 def printer_status(printer_id):
     return do_printer_status(printer_id)
+    
+
 
 @app.route('/orders')
 def orders():
     return do_orders()
     
-@app.route('/orders/shipping/<string:receipt_id>', methods=['POST'])
-def shipping_label(receipt_id):
-    return do_shipping_label(receipt_id)
+@app.route('/orders/contractshipping/<string:group_id>', methods=['POST'])
+def shipping_label(group_id):
+    return do_contract_shipping_label(group_id)
+
+@app.route('/orders/manifest/<string:group_id>', methods=['POST'])
+def manifest(group_id):
+    return do_manifest(group_id)
 
 @app.route('/orders/complete/<string:receipt_id>', methods=['POST'])
 def order_complete(receipt_id):
     return do_order_complete(receipt_id)
+
+@app.route('/inventory')
+def inventory():
+    return do_inventory()
+    
+@app.route('/inventory/<string:strategy>')
+def inventory2(strategy):
+    return do_inventory(strategy=strategy)
+    
+@app.route('/inventory/add', methods=['POST'])
+def add_inventory():
+    inv_data = {
+        'sku': request.form.get('sku', ''),
+        'quantity': request.form.get('quantity', 0)
+    }
+    return do_add_items(inv_data)
+
+@app.route('/inventory/random', methods=['POST'])
+def random_add():
+    return do_add_random_items()
+    
+@app.route('/inventory/edit', methods=['POST'])
+def edit_inventory():
+    inv_data = {
+        'sku': request.form.get('sku', ''),
+        'quantity': request.form.get('quantity', 0),
+    }
+    return do_edit_items(inv_data)
+
+@app.route('/manifest/create', methods=['POST'])
+def create_manifest():
+    strategy = request.form.get('strategy', 'oldest')
+    return do_create_manifest(strategy)
 
 @app.route('/boxes')
 def boxes():
@@ -116,9 +161,9 @@ def remove_boxes():
 def shipping_costs():
     return do_shipping_costs()
     
-@app.route('/orders/<int:status>')
-def orders2(status):
-    return do_orders(status)
+@app.route('/orders/<string:manifest>')
+def orders_manifest2(manifest):
+    return do_orders(group_id=manifest)
 
 @app.route('/orders/update', methods=['POST'])
 def update_orders():

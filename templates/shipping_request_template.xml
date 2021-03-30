@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<non-contract-shipment xmlns="http://www.canadapost.ca/ws/ncshipment-v4">
-    <requested-shipping-point>M1H2A0</requested-shipping-point>
+<shipment xmlns="http://www.canadapost.ca/ws/shipment-v8">
+    <group-id>{{ data.group_id }}</group-id>
+    <requested-shipping-point>M1H2E7</requested-shipping-point>
+    <cpc-pickup-indicator>true</cpc-pickup-indicator>
+    <expected-mailing-date>{{ data.mailing_date }}</expected-mailing-date>
     <delivery-spec>
         {% if data.country == 'US' %}
             {% if is_first_package %}
-                <service-code>USA.TP</service-code>
+        <service-code>USA.TP</service-code>
             {% else %}
-                <service-code>USA.SP.AIR</service-code>
+        <service-code>USA.SP.AIR</service-code>
             {% endif %}
         {% else %}
-            <service-code>DOM.EP</service-code>
+        <service-code>DOM.EP</service-code>
         {% endif %}
         <sender>
+            <name>Kavin</name>
             <company>Tectle</company>
             <contact-phone>647-886-0652</contact-phone>
             <address-details>
                 <address-line-1>495 Brimorton Drive</address-line-1>
                 <city>Toronto</city>
                 <prov-state>ON</prov-state>
+                <country-code>CA</country-code>
                 <postal-zip-code>M1H2E7</postal-zip-code>
             </address-details>
         </sender>
@@ -29,8 +34,8 @@
                 <address-line-2>{{ data.second_line }}</address-line-2>
                 <city>{{ data.city }}</city>
                 <prov-state>{{ data.state }}</prov-state>
-                <postal-zip-code>{{ data.zip }}</postal-zip-code>
                 <country-code>{{ data.country }}</country-code>
+                <postal-zip-code>{{ data.zip }}</postal-zip-code>
             </address-details>
         </destination>
         <options>
@@ -45,6 +50,8 @@
                 <width>{{ data.width }}</width>
                 <height>{{ data.height }}</height>
             </dimensions>
+			<unpackaged>false</unpackaged>
+			<mailing-tube>false</mailing-tube>
         </parcel-characteristics>
         <notification>
             <email>{{ data.buyer_email }}</email>
@@ -52,6 +59,9 @@
             <on-exception>true</on-exception>
             <on-delivery>true</on-delivery>
         </notification>
+        <print-preferences>
+          <output-format>8.5x11</output-format>
+        </print-preferences>
         <preferences>
             <show-packing-instructions>true</show-packing-instructions>
         </preferences>
@@ -75,5 +85,9 @@
             </sku-list>
         </customs>
         {% endif %}
+        <settlement-info>
+          <contract-id>{{ contract_id }}</contract-id>
+          <intended-method-of-payment>Account</intended-method-of-payment>
+        </settlement-info>
     </delivery-spec>
-</non-contract-shipment>
+</shipment>

@@ -9,13 +9,25 @@
   </h4>
   <div class="divider" ></div>
   <div class="form-group">
-    <label class="form-label" for="order-status-select">Order Status</label>
-    <select id="order-status-select" class="form-select">
-      <option value="/orders">All Orders</option>
-      <option value="/orders/0">Pending</option>
-      <option value="/orders/1">Printed</option>
-      <option value="/orders/2">Completed</option>
+    <label class="form-label" for="manifest-select">Manifest</label>
+    <select id="manifest-select" class="form-select" style="width: auto">
+      <option value="/orders">All</option>
+      {% for manifest in manifests %}
+      <option value="/orders/{{ manifest.group_id }}">{{ manifest.group_id }}</option>
+      {% endfor %}
     </select>
+    {% if selected_manifest %}
+      {% if total_num_complete != total_num_labels %}
+        <button id="get-shipments-btn" class="btn btn-sm btn-primary s-rounded" onClick="getShipments('{{ selected_manifest }}')">Get Shipments</button>
+        <sup>{{ total_num_complete }}</sup>&frasl;<sub>{{ total_num_labels }}</sub>
+      {% else %}
+        {% if manifest_file %}
+        <a target="_blank" href="/{{ manifest_file }}">Get Manifest</a>
+        {% else %}
+        <button id="get-manifest-btn" class="btn btn-sm btn-primary s-rounded" onClick="getManifest('{{ selected_manifest }}')">Get Manifest</button>
+        {% endif %}
+      {% endif %}
+    {% endif %}
   </div>
   <table class="data-table noselect">
     <thead>
@@ -28,6 +40,9 @@
         </td>
         <td>
           <h5>Country</h5>
+        </td>
+        <td>
+          <h5>Group ID</h5>
         </td>
         <td>
           <h5>Status</h5>
@@ -55,13 +70,15 @@
         {{ receipt.country }}
       </td>
       <td>
+        {{ receipt.group_id }}
+      </td>
+      <td>
         <span class="label label-{{ receipt.css_status }} receipt-status">{{ receipt.html_status }}</span>
       </td>
       <td>
         {% if receipt.shipping_label %}
-          <a target="_blank" href="{{ receipt.shipping_label }}">Get PDF</a>
+          <a target="_blank" href="/{{ receipt.shipping_label }}">Get PDF</a>
         {% else %}
-          <button id="shipping-btn-{{ receipt.receipt_id }}" class="btn btn-sm btn-primary s-rounded" onClick="getShipping('{{ receipt.receipt_id }}')">Create Shipping Label</button>
           <sup>{{ receipt.num_completed_labels }}</sup>&frasl;<sub>{{ receipt.total_num_labels }}</sub>
         {% endif %}
       </td>
@@ -81,5 +98,6 @@
     {% endfor %}
   </table>
 </div>
+<input type="hidden" id="manifests" value="{{ manifests }}" />
 <script src="/static/js/orders.js"></script>
 {% endblock %}

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transmit-set xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.canadapost.ca/ws/manifest-v8">
+  <group-ids>
+    <group-id>{{ group_id }}</group-id>
+  </group-ids>
+  <requested-shipping-point>M1H2E7</requested-shipping-point>
+  <cpc-pickup-indicator>true</cpc-pickup-indicator>
+  <detailed-manifests>true</detailed-manifests>
+  <method-of-payment>Account</method-of-payment>
+  <manifest-address>
+    <manifest-company>Tectle</manifest-company>
+    <phone-number>647-886-0652</phone-number>
+    <address-details>
+      <address-line-1>495 Brimorton Drive</address-line-1>
+      <city>Toronto</city>
+      <prov-state>ON</prov-state>
+      <country-code>CA</country-code>
+      <postal-zip-code>M1H2E7</postal-zip-code>
+    </address-details>
+  </manifest-address>
+</transmit-set>

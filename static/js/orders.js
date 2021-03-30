@@ -1,8 +1,8 @@
 $(document).ready( function() {
-    $("#order-status-select").val(window.location.pathname);
-    $("#order-status-select").change( function() {
-      window.location = $(this).val();
-    });
+  $("#manifest-select").val(window.location.pathname);
+  $("#manifest-select").change( function() {
+    location.replace($(this).val());
+  });
 });
 
 function updateReceipts() {
@@ -16,6 +16,44 @@ function updateReceipts() {
       }
       else {
         alert(this.responseText);
+      }
+    }
+  }
+  xhr.send();
+}
+
+function getShipments(groupId) {
+  $("#get-shipments-btn").addClass("disabled");
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/orders/contractshipping/'+groupId, true);
+  xhr.onreadystatechange = function() {
+    if (this.readyState === XMLHttpRequest.DONE) {
+      if (this.status === 200) {
+        location.reload();
+      }
+      else {
+        if (!alert(this.responseText)) {
+          location.reload();
+        }
+      }
+    }
+  }
+  xhr.send();
+}
+
+function getManifest(groupId) {
+  $("#get-manifest-btn").addClass("disabled");
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/orders/manifest/'+groupId, true);
+  xhr.onreadystatechange = function() {
+    if (this.readyState === XMLHttpRequest.DONE) {
+      if (this.status === 200) {
+        location.reload();
+      }
+      else {
+        if (!alert(this.responseText)) {
+          location.reload();
+        }
       }
     }
   }
