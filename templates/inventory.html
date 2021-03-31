@@ -71,13 +71,13 @@
         {{ item.quantity }}
       </td>
       <td>
-        <input id="{{ item.id }}-input-id" type="hidden" value="{{ item.id }}">
-        <input id="{{ item.id }}-input-sku" type="hidden" value="{{ item.sku }}">
-        <input id="{{ item.id }}-input-qty" type="hidden" value="{{ item.quantity }}">
-        <i class="icon icon-edit c-hand" onClick="openModalEdit({{ item.id}});" style="font-size: 0.7em;vertical-align: baseline;margin-left:0.5em"></i>
+        <input id="{{ item.product_id }}-input-id" type="hidden" value="{{ item.product_id }}">
+        <input id="{{ item.product_id }}-input-sku" type="hidden" value="{{ item.sku }}">
+        <input id="{{ item.product_id }}-input-qty" type="hidden" value="{{ item.quantity }}">
+        <i class="icon icon-edit c-hand" onClick="openModalEdit({{ item.product_id }});" style="font-size: 0.7em;vertical-align: baseline;margin-left:0.5em"></i>
       </td>
       <td>
-        <i class="icon icon-delete c-hand" onClick="openModalDelete({{ item.id }});" style="font-size: 0.7em;vertical-align: baseline;margin-left:0.5em"></i>
+        <i class="icon icon-delete c-hand" onClick="openModalDelete({{ item.product_id }});" style="font-size: 0.7em;vertical-align: baseline;margin-left:0.5em"></i>
       </td>
     </tr>
     {% endfor %}
@@ -150,7 +150,7 @@
       </form>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-error" onClick="sendRemoveClass();">Remove</button><a class="btn btn-link" href="#close" onClick="closeModalDelete();" aria-label="Close">Close</a>
+      <button class="btn btn-error" onClick="sendRemoveItem();">Remove</button><a class="btn btn-link" href="#close" onClick="closeModalDelete();" aria-label="Close">Close</a>
     </div>
   </div>
 </div>
