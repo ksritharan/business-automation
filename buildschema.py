@@ -2,7 +2,7 @@ from tectle.buildschema import *
 
 def main():
     num_printers = 1
-    num_fake_receipts = 10
+    num_fake_receipts = 20
     max_num_items = 5
     max_quantity = 3
     conn = get_connection(DB_DEBUG_FILE)
