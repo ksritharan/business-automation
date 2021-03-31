@@ -1,7 +1,7 @@
 from tectle.buildschema import *
 
 def main():
-    num_printers = 10
+    num_printers = 1
     num_fake_receipts = 10
     max_num_items = 5
     max_quantity = 3
