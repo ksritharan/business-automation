@@ -1,2 +1,2 @@
 
-cmd.exe /k %cd%\python\python.exe app.py
+cmd.exe /k "%cd%\python\python.exe" app.py
