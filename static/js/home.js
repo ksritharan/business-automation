@@ -120,6 +120,7 @@ function updateDatabaseRequest(item, sender, receiver, priority, startPos) {
       }
       else {
         //revert
+        alert('Error adding sku to printer queue\n'+this.responseText);
         var next = $(sender).find("li:eq("+startPos+")");
         if (next.length == 0) {
           sender.appendChild(item);

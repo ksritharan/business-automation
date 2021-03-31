@@ -30,6 +30,10 @@
               <td><a href="http://{{ printer.printer_ip }}">{{ printer.printer_ip }}</a></td>
             </tr>
             <tr>
+              <td>Printer Name:</td>
+              <td>{{ printer.name }}</td>
+            </tr>
+            <tr>
               <td>Printer Status:</td>
               <td><b style="text-transform: uppercase;vertical-align: middle;">{{ printer.str_status }}</b></td>
             </tr>
@@ -103,6 +107,8 @@
           <div class="form-group">
             <label class="form-label" for="input-ip">Printer IP</label>
             <input class="form-input" id="input-ip" type="text" placeholder="192.168.X.XXX">
+            <label class="form-label" for="input-name">Printer Name</label>
+            <input class="form-input" id="input-name" type="text" placeholder="Joey">
           </div>
         </form>
       </div>
@@ -127,6 +133,7 @@
     }
     function sendAddPrinterRequest() {
       var ipAddress = $("#input-ip").val();
+      var name = $("#input-name").val();
       var ipREGEX = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/;
       var testResult = ipREGEX.test(ipAddress);
       if (testResult == false) {
@@ -148,7 +155,7 @@
             }
           }
         }
-        xhr.send('ip='+ipAddress);
+        xhr.send('ip='+ipAddress+"&name="+name);
       }
     }
     function sendRemovePrinterRequest() {

@@ -41,7 +41,15 @@
                 <!--<img src="static/img/tectle-center.png">-->
                 <i class="avatar-presence {{ printer.css_status }}"></i>
               </figure>
-              <i class="noselect" style="font-family: Roboto">{{ printer.printer_ip }}</i>
+              <div style="display: inline-block;vertical-align: middle">
+                {% if printer.name %}
+                <i class="noselect" style="font-family: Roboto">{{ printer.name }}</i>
+                {% else %}
+                <i class="noselect" style="font-family: Roboto">{{ printer.printer_ip }}</i>
+                {% endif %}
+                <br>
+                <i style="font-size: small">{{ printer.color }}</i>
+              </div>
             </div>
             {% if printer.is_printing == 0 %}
             <div class="progress-bar" id="progress-bar-{{ printer.id }}"  style="display: none;">

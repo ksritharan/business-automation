@@ -32,7 +32,8 @@ def printers():
 @app.route('/printers/add', methods=['POST'])
 def printers_add():
     ip_address = request.form.get('ip')
-    return do_add_printers(ip_address)
+    name = request.form.get('name', '')
+    return do_add_printers(ip_address, name=name)
 
 @app.route('/printers/remove', methods=['POST'])
 def printers_remove():
