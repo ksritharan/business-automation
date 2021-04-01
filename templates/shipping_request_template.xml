@@ -6,11 +6,7 @@
     <expected-mailing-date>{{ data.mailing_date }}</expected-mailing-date>
     <delivery-spec>
         {% if data.country == 'US' %}
-            {% if is_first_package %}
         <service-code>USA.TP</service-code>
-            {% else %}
-        <service-code>USA.SP.AIR</service-code>
-            {% endif %}
         {% else %}
         <service-code>DOM.EP</service-code>
         {% endif %}
