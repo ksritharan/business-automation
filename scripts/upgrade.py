@@ -73,11 +73,11 @@ def update_version(cur, new_version):
     query = "UPDATE db_version SET version = %s" % new_version
     cur.execute(query)
     
-def main():
+def upgrade_non_flask():
     config = load_config_non_flask()
     conn = get_connection_non_flask(config['DEBUG'] == 'True')
     cur = conn.cursor()
     upgrade(conn, cur)
 
 if __name__ == '__main__':
-    main()
+    upgrade_non_flask()
