@@ -4,3 +4,4 @@
 *.pyc
 *.pyc
 python/Lib/site-packages/tectle/__pycache__/__init__.cpython-38.pyc
+*.db
