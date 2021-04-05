@@ -176,6 +176,8 @@ function updatePrinterStatusHelper(printerId, info) {
 }
 
 function printNext(printerId) {
+  var printBtn = $("#print-btn-"+printerId);
+  $(printBtn).addClass("disabled");
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/printer/'+printerId+'/print', true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -185,6 +187,7 @@ function printNext(printerId) {
         $(".sortable input[name=printer_id][value="+printerId+"]").parent().find("li:eq(0)").remove();
         var newVal = parseInt($("#printer-"+printerId).attr("data-badge")) - 1;
         $("#printer-"+printerId).attr("data-badge", newVal);
+        $(printBtn).removeClass("disabled");
         updatePrinterStatus(printerId);
       }
       else {
