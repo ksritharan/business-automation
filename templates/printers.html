@@ -52,6 +52,20 @@
               </td>
             </tr>
             <tr>
+              <td>Waterplate Priority:</td>
+              <td>
+                <select id="{{ printer.id }}-edit-input-waterplate" onchange="updatePrinterWaterplate({{ printer.id }})">
+                  {% if printer.waterplate_only == 0 %}
+                  <option data-val="0" selected>No Priority</option>
+                  <option data-val="1">Only Waterplate</option>
+                  {% else %}
+                  <option data-val="0">No Priority</option>
+                  <option data-val="1" selected>Only Waterplate</option>
+                  {% endif %}
+                </select>
+              </td>
+            </tr>
+            <tr>
               <td>Current Item:</td>
               <td>{{ printer.current_sku }}</td>
             </tr>
@@ -195,6 +209,27 @@
         }
       }
       xhr.send("printerId="+printerId+"&color="+color);
+    
+    }
+    function updatePrinterWaterplate(printerId) {
+      var waterplateOnly = $("#1-edit-input-waterplate option:selected").attr("data-val");
+      sendUpdatePrinterWaterplateRequest(printerId, waterplateOnly);
+    }
+    function sendUpdatePrinterWaterplateRequest(printerId, waterplateOnly) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/printer/waterplate', true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onreadystatechange = function() { // Call a function when the state changes.
+        if (this.readyState === XMLHttpRequest.DONE) {
+          if (this.status === 200) {
+            location.reload();
+          }
+          else {
+            alert('Error edit printer waterplate priority\n'+this.responseText);
+          }
+        }
+      }
+      xhr.send("printerId="+printerId+"&waterplateOnly="+waterplateOnly);
     
     }
   </script>

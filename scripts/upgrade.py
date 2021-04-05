@@ -44,6 +44,20 @@ def upgrade(conn, cur):
             cur.executescript(query)
             conn.commit()
             new_version = 2
+        if version < 3:
+            query = """
+                ALTER TABLE printers ADD COLUMN progress INTEGER DEFAULT 0
+            """
+            cur.executescript(query)
+            conn.commit()
+            new_version = 3
+        if version < 4:
+            query = """
+                ALTER TABLE printers ADD COLUMN waterplate_only INTEGER DEFAULT 0
+            """
+            cur.executescript(query)
+            conn.commit()
+            new_version = 4
     except Exception as e:
         conn.rollback()
         print(e)

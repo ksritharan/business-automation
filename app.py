@@ -51,6 +51,12 @@ def printer_color():
     printer_id = request.form.get('printerId')
     color = request.form.get('color')
     return do_color_printers(printer_id, color)
+
+@app.route('/printer/waterplate', methods=['POST'])
+def printer_waterplate():
+    printer_id = request.form.get('printerId')
+    waterplate_only = int(request.form.get('waterplateOnly'))
+    return do_waterplate_printers(printer_id, waterplate_only)
     
 @app.route('/db')
 def db_info():

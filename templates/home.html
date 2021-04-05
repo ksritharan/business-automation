@@ -49,6 +49,9 @@
                 {% endif %}
                 <br>
                 <i style="font-size: small">{{ printer.color }}</i>
+                {% if printer.waterplate_only == 1 %}
+                  <i style="font-size: small">Waterplate Only</i>
+                {% endif %}
               </div>
             </div>
             {% if printer.is_printing == 0 %}

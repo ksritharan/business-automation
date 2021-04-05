@@ -202,6 +202,11 @@ function printNext(printerId) {
       else {
         alert('Error Printing\n'+this.responseText);
         $(printBtn).removeClass("disabled");
+        if ($("#toast-"+printerId).length == 1) {
+          var toast = $("#toast-"+printerId);
+          toast.fadeOut("slow", function() { $(this).remove(); });
+        }
+        updatePrinterStatus(printerId);
       }
     }
   }
