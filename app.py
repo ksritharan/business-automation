@@ -15,6 +15,12 @@ app = Flask(__name__)
 app.secret_key = b'\x81/\xc9$\xd7\xd6\xe8\x0b\xf1e\x01\x10I\xba\xedq'
 app.config_loaded = False
 
+@app.after_request
+def add_header(r):
+    # no browser cache
+    r.headers['Cache-Control'] = 'no-store, max-age=0'
+    return r
+
 @app.route('/')
 def index():
     if not app.config_loaded:
@@ -67,7 +73,9 @@ def printer_print(printer_id):
 def printer_status(printer_id):
     return do_printer_status(printer_id)
     
-
+@app.route('/printer/upload/status', methods=['GET'])
+def printer_upload_status():
+    return do_printer_upload_status()
 
 @app.route('/orders')
 def orders():
@@ -235,6 +243,16 @@ def printer_gcode(printer_ip):
 @app.route('/printer/<string:printer_ip>/rr_reply')
 def printer_reply(printer_ip):
     return do_printer_reply(printer_ip)
+
+@app.route('/printer/<string:printer_ip>/rr_upload', methods=['POST'])
+def printer_upload(printer_ip):
+    filename = request.args.get('name', '')
+    time = request.args.get('time', '')
+    return do_printer_upload(filename, time, request)
+    
+@app.route('/printer/<string:printer_ip>/rr_fileinfo')
+def printer_fileinfo(printer_ip):
+    return do_printer_fileinfo(printer_ip)
     
 @app.route('/etsy')
 def etsy():

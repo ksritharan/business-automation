@@ -37,6 +37,13 @@ def upgrade(conn, cur):
             cur.execute(query)
             conn.commit()
             new_version = 1
+        if version < 2:
+            query = """
+                ALTER TABLE printer_gcodes ADD COLUMN progress INTEGER DEFAULT 100
+            """
+            cur.executescript(query)
+            conn.commit()
+            new_version = 2
     except Exception as e:
         conn.rollback()
         print(e)
@@ -59,7 +66,6 @@ def get_version(cur):
     cur.execute(query)
     exists = cur.fetchone()[0]
     version = 0
-    print(exists)
     if exists:
         query = """
             SELECT version

@@ -143,6 +143,7 @@ function updatePrinterStatusHelper(printerId, info) {
   
   var printBtn = $("#print-btn-"+printerId);
   var progressBar = $("#progress-bar-"+printerId);
+  var isUploading = $("#toast-"+printerId).length == 1;
   
   $(printBtn).removeClass("btn-success");
   $(printBtn).removeClass("print-btn");
@@ -155,6 +156,9 @@ function updatePrinterStatusHelper(printerId, info) {
     $(printBtn).addClass("print-btn");
     $(printBtn).text("Print Next");
     $(progressBar).hide();
+    if (isUploading) {
+      $(printBtn).addClass("disabled");
+    }
   }
   else if (info["css_status"] == "away") {
     $(printBtn).addClass("disabled");
@@ -188,10 +192,16 @@ function printNext(printerId) {
         var newVal = parseInt($("#printer-"+printerId).attr("data-badge")) - 1;
         $("#printer-"+printerId).attr("data-badge", newVal);
         $(printBtn).removeClass("disabled");
+        if ($("#toast-"+printerId).length == 1) {
+          var toast = $("#toast-"+printerId);
+          toast.find(".progress").val(100);
+          toast.fadeOut("slow", function() { $(this).remove(); });
+        }
         updatePrinterStatus(printerId);
       }
       else {
         alert('Error Printing\n'+this.responseText);
+        $(printBtn).removeClass("disabled");
       }
     }
   }
@@ -205,6 +215,7 @@ function updateAllPrinterStatuses() {
       updatePrinterStatus(printerId);
     }
   });
+  getUploadStatus();
 }
 
 function updateReceipt(receiptId) {
@@ -255,6 +266,43 @@ function updatePrinterStatus(printerId) {
         else {
           updatePrinterStatusHelper(printerId, responseJSON);
         }
+      }
+    }
+  }
+  xhr.send();
+}
+
+function getOrCreateProgressToast(printer_id, printer_ip, filename) {
+  var toastId = "toast-"+printer_id;
+  if ($("#"+toastId).length == 0) {
+    var item = '' +
+    '<div id="'+toastId+'" class="toast noselect" style="margin-bottom: 0.5em">' +
+    ' <h6>'+filename+' <i class="icon icon-forward" style="font-size: 12px"></i> '+printer_ip+' </h6>' +
+    ' <progress class="progress" value="0" max="100"></progress>' +
+    '</div>';
+    $(item).appendTo(".upload-toasts");
+  }
+  return $("#"+toastId);
+}
+
+function updateUploadProgress(printer_id, printer_ip, filename, progress) {
+  var toast = getOrCreateProgressToast(printer_id, printer_ip, filename);
+  toast.find(".progress").val(progress);
+}
+
+function getUploadStatus() {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', '/printer/upload/status', true);
+  xhr.onreadystatechange = function() {
+    if (this.readyState === XMLHttpRequest.DONE) {
+      if (this.status === 200) {
+        var responseJSON = JSON.parse(this.response);
+        var count = responseJSON['count'];
+        for (var i = 0; i < count; i++) {
+          var data = responseJSON['statuses'][i];
+          updateUploadProgress(data['printer_id'], data['printer_ip'], data['filename'], data['progress']);
+        }
+        
       }
     }
   }
