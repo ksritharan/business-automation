@@ -290,7 +290,7 @@ def worker_thread():
     url_template = None
     is_debug = 'DEBUG' in config and config['DEBUG'] == 'True'
     is_printer_debug = 'PRINTER_DEBUG' in config and config['PRINTER_DEBUG'] == 'True'
-    sleep_interval = float(config.get('SLEEP_INTERVAL', '0.5')) # seconds
+    sleep_interval = float(config.get('SLEEP_INTERVAL', '60')) # seconds
     while True:
         update_printers(is_printer_debug, is_debug)
         sleep(sleep_interval)
