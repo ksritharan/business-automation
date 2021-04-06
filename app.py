@@ -15,6 +15,12 @@ app = Flask(__name__)
 app.secret_key = b'\x81/\xc9$\xd7\xd6\xe8\x0b\xf1e\x01\x10I\xba\xedq'
 app.config_loaded = False
 
+@app.before_request
+def before_request_func():
+    if not app.config_loaded:
+        load_config(force=True)
+        app.config_loaded = True
+
 @app.after_request
 def add_header(r):
     # no browser cache
@@ -23,9 +29,6 @@ def add_header(r):
 
 @app.route('/')
 def index():
-    if not app.config_loaded:
-        load_config(force=True)
-        app.config_loaded = True
     response = check_etsy_or_redirect()
     if not response:
         response = do_home()
