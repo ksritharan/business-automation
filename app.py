@@ -101,6 +101,12 @@ def manifest(group_id):
 @app.route('/orders/complete/<string:receipt_id>', methods=['POST'])
 def order_complete(receipt_id):
     return do_order_complete(receipt_id)
+    
+
+@app.route('/orders/remove', methods=['POST'])
+def remove_order():
+    receipt_id = request.form.get('receipt_id', '')
+    return do_remove_receipt(receipt_id)
 
 @app.route('/inventory')
 def inventory():

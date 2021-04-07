@@ -145,6 +145,11 @@ function sendEditQty(sku, input) {
     xhr.onreadystatechange = function() { // Call a function when the state changes.
       if (this.readyState === XMLHttpRequest.DONE) {
         if (this.status === 200) {
+          $(input).addClass("is-success");
+          setTimeout(function() {
+            $(input).removeClass("is-success");
+          }, 300);
+          
         }
         else {
           alert('Error editing inventory\nsku: '+sku+'\nquantity: '+quantity+'\n'+this.responseText);

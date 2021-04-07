@@ -97,3 +97,29 @@ function completeOrder(receiptId) {
   }
   xhr.send();
 }
+
+function openModalDelete(receiptId) {
+  $("#modal-delete").addClass("active");
+  $("#input-receipt-id").val(receiptId);
+}
+function closeModalDelete() {
+  $("#modal-delete").removeClass("active");
+}
+function sendRemoveReceipt() {
+  var receiptId = $("#input-receipt-id").val();
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/orders/remove', true);
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  xhr.onreadystatechange = function() { // Call a function when the state changes.
+    if (this.readyState === XMLHttpRequest.DONE) {
+      if (this.status === 200) {
+        closeModalDelete();
+        location.reload();
+      }
+      else {
+        alert('Error deleting receipt\n'+this.responseText);
+      }
+    }
+  }
+  xhr.send('receipt_id='+receiptId);
+}
