@@ -2,6 +2,7 @@ import requests
 import shutil
 import zipfile
 import os
+from tectle.config import load_config_non_flask
 
 zip_name = '../business-automation-master.zip'
 zip_inner_dir = 'business-automation-master/'
@@ -12,6 +13,32 @@ unzip_dir = '../temp/business-automation-master'
 to_copy_dir = '../to copy/'
 final_zip_name = 'D:/business-automation/release versions/version to upload/business-automation-master'
 base_dir = 'business-automation-master/'
+
+def get_prod_script():
+    prod_zip_name = '../prod script.zip'
+    delete_dir(prod_zip_name)
+    config = load_config_non_flask()
+    url = config['PROD_SCRIPT']
+    headers = {}
+    headers['Accept'] = 'application/zip'
+    headers['Content-Type'] = 'application/zip'
+    r = requests.request("GET", url, headers=headers)
+    r.raise_for_status()
+    
+    fd = open(prod_zip_name, 'wb')
+    try:
+        fd.write(r.content)
+    except Exception as e:
+        fd.close()
+        raise e
+    finally:
+        fd.close()
+    try:
+        shutil.unpack_archive(prod_zip_name, to_copy_dir)
+        #shutil.copytree(unzip_dir, to_copy_dir)
+    except OSError as e:
+        print ("Error: %s - %s." % (e.filename, e.strerror))
+    delete_dir(prod_zip_name)
 
 def delete_dir(dir_name):
     try:
@@ -121,6 +148,7 @@ def main():
     unzip()
     delete_dir(unzip_dir_parent)
     delete_file(zip_name)
+    get_prod_script()
     package_folder()
 
 if __name__ == '__main__':

@@ -51,10 +51,10 @@
     {% endfor %}
   </table>
   <br />
-  <h4 class="noselect page-title">Products
+  <h4 class="page-title">Products
   </h4>
   <div class="divider" ></div>
-  <table class="data-table noselect">
+  <table class="data-table">
     <thead>
       <tr>
         <td>
@@ -80,6 +80,9 @@
         </td>
         <td>
           <h5>Package Class</h5>
+        </td>
+        <td>
+          <h5>Quantity</h5>
         </td>
       </tr>
     </thead>
@@ -120,6 +123,11 @@
           </select>
         </div>
         {% endif %}
+     </td>
+      <td>
+        <div class="form-group">
+          <input class="form-input form-val small-input input-sm" key="qty" oninput="sendEditQty('{{ product.sku }}', this)" id="add-input-qty" type="number" min="0" step="1" value="{{ product.quantity }}">
+        </div>
      </td>
     </tr>
     {% endfor %}

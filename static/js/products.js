@@ -129,3 +129,28 @@ function sendUpdateProductClass(productId, packageClassId, dropDown) {
   }
     xhr.send($.param(data));
 }
+
+function sendEditQty(sku, input) {
+  var quantity = $(input).val();
+  
+  if (quantity != '') {
+    var data = {
+      'sku': sku,
+      'quantity': parseInt(quantity)
+    };
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/inventory/edit', true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() { // Call a function when the state changes.
+      if (this.readyState === XMLHttpRequest.DONE) {
+        if (this.status === 200) {
+        }
+        else {
+          alert('Error editing inventory\nsku: '+sku+'\nquantity: '+quantity+'\n'+this.responseText);
+        }
+      }
+    }
+    xhr.send($.param(data));
+  }
+}
