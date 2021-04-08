@@ -7,8 +7,10 @@
     <delivery-spec>
         {% if data.country == 'US' %}
         <service-code>USA.TP</service-code>
-        {% else %}
+        {% elif data.country == 'CA' %}
         <service-code>DOM.EP</service-code>
+        {% else %}
+        <service-code>INT.TP</service-code>
         {% endif %}
         <sender>
             <name>Jigar</name>
@@ -28,10 +30,24 @@
             <address-details>
                 <address-line-1>{{ data.first_line }}</address-line-1>
                 <address-line-2>{{ data.second_line }}</address-line-2>
+                {% if data.country == 'CA' or data.country == 'US' %}
                 <city>{{ data.city }}</city>
                 <prov-state>{{ data.state }}</prov-state>
-                <country-code>{{ data.country }}</country-code>
                 <postal-zip-code>{{ data.zip }}</postal-zip-code>
+                {% else %}
+                <city>{{ data.city }}</city>
+                    {% if data.state %}
+                <prov-state>{{ data.state }}</prov-state>
+                {% else %}
+                <prov-state> </prov-state>
+                    {% endif %}
+                    {% if data.zip %}
+                <postal-zip-code>{{ data.zip }}</postal-zip-code>
+                {% else %}
+                <postal-zip-code> </postal-zip-code>
+                    {% endif %}
+                {% endif %}
+                <country-code>{{ data.country }}</country-code>
             </address-details>
         </destination>
         <options>
@@ -61,10 +77,10 @@
         <preferences>
             <show-packing-instructions>true</show-packing-instructions>
         </preferences>
-        {% if data.country == 'US' %}
+        {% if data.country != 'CA' %}
         <customs>
-            <currency>USD</currency>
-            <conversion-from-cad>0.85</conversion-from-cad>
+            <currency>{{ data.currency }}</currency>
+            <conversion-from-cad>{{ data.fxrate }}</conversion-from-cad>
             <reason-for-export>SOG</reason-for-export>
             <sku-list>
                 {% for item in items %}

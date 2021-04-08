@@ -2,9 +2,9 @@ from tectle.buildschema import *
 
 def main():
     num_printers = 1
-    num_fake_receipts = 20
-    max_num_items = 5
-    max_quantity = 3
+    num_fake_receipts = 5
+    max_num_items = 2
+    max_quantity = 2
     conn = get_connection(DB_DEBUG_FILE)
     cur = conn.cursor()
     build_schema(cur)

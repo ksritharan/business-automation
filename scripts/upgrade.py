@@ -1,7 +1,8 @@
 from tectle.db import get_connection_non_flask
 from tectle.config import load_config_non_flask
+import requests
 
-def upgrade(conn, cur):
+def upgrade(conn, cur, config):
     version = get_version(cur)
     new_version = version
     
@@ -58,6 +59,43 @@ def upgrade(conn, cur):
             cur.executescript(query)
             conn.commit()
             new_version = 4
+        if version < 5:
+            response = requests.get("https://openapi.etsy.com/v2/countries?api_key="+config['API_KEY'])
+            rows = response.json()['results']
+            query = """
+                CREATE TABLE countries (
+                    id                INTEGER PRIMARY KEY,
+                    country_id        INTEGER, /* Etsy */
+                    country_code      TEXT,    /* CA, US, FR */
+                    name              TEXT     /* Canada */
+                );
+                INSERT INTO countries (country_id, country_code, name)
+                VALUES %s
+            """ % ',\n'.join(["(%(country_id)s, '%(iso_country_code)s', '%(name)s')" % row for row in rows])
+            cur.executescript(query)
+            conn.commit()
+            new_version = 5
+        if version < 6:
+            fh = open('scripts/resources/country_values.txt', 'r')
+            values = fh.read()
+            fh.close()
+            query = """
+                DROP TABLE IF EXISTS countries;
+                CREATE TABLE countries (
+                    id                INTEGER PRIMARY KEY,
+                    country_id        INTEGER, /* Etsy */
+                    country_code      TEXT,    /* CA, US, FR */
+                    name              TEXT,    /* Canada */
+                    currency          TEXT,    /* CAD */
+                    fxrate            REAL     /* 1.0 */
+                );
+                INSERT INTO countries (country_id, country_code, name, currency, fxrate)
+                VALUES %s
+            """ % values
+            cur.executescript(query)
+            conn.commit()
+            new_version = 6
+            
     except Exception as e:
         conn.rollback()
         print(e)
@@ -97,7 +135,7 @@ def upgrade_non_flask():
     config = load_config_non_flask()
     conn = get_connection_non_flask(config['DEBUG'] == 'True')
     cur = conn.cursor()
-    upgrade(conn, cur)
+    upgrade(conn, cur, config)
 
 if __name__ == '__main__':
     upgrade_non_flask()
