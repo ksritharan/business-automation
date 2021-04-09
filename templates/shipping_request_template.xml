@@ -36,15 +36,10 @@
                 <postal-zip-code>{{ data.zip }}</postal-zip-code>
                 {% else %}
                 <city>{{ data.city }}</city>
-                    {% if data.state %}
-                <prov-state>{{ data.state }}</prov-state>
-                {% else %}
-                <prov-state> </prov-state>
-                    {% endif %}
                     {% if data.zip %}
-                <postal-zip-code>{{ data.zip }}</postal-zip-code>
-                {% else %}
-                <postal-zip-code> </postal-zip-code>
+                        <postal-zip-code>{{ data.zip }}</postal-zip-code>
+                    {% else %}
+                        <postal-zip-code> </postal-zip-code>
                     {% endif %}
                 {% endif %}
                 <country-code>{{ data.country }}</country-code>
