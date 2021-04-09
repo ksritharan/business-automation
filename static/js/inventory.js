@@ -4,7 +4,8 @@ $(document).ready( function() {
   });
 });
 
-function sendCreateManifest() {
+function sendCreateManifest(btn) {
+  $(btn).addClass("disabled");
   var data = {
     'strategy': $("#strategy").val()
   };
@@ -14,7 +15,7 @@ function sendCreateManifest() {
   xhr.onreadystatechange = function() { // Call a function when the state changes.
     if (this.readyState === XMLHttpRequest.DONE) {
       if (this.status === 200) {
-        location.replace("/orders/" + this.responseText);
+        sendContractShipping(this.responseText);
       }
       else {
         alert('Error creating manifest\n'+this.responseText);
@@ -22,6 +23,17 @@ function sendCreateManifest() {
     }
   }
   xhr.send($.param(data));
+}
+
+function sendContractShipping(groupId) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/orders/contractshipping/'+groupId, true);
+  xhr.onreadystatechange = function() {
+    if (this.readyState === XMLHttpRequest.DONE) {
+      location.replace("/orders/" + groupId);
+    }
+  }
+  xhr.send();
 }
 
 

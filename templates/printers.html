@@ -56,11 +56,11 @@
               <td>
                 <select id="{{ printer.id }}-edit-input-waterplate" onchange="updatePrinterWaterplate({{ printer.id }})">
                   {% if printer.waterplate_only == 0 %}
-                  <option data-val="0" selected>No Priority</option>
-                  <option data-val="1">Only Waterplate</option>
+                  <option data-val="0" selected>Planter</option>
+                  <option data-val="1">Waterplate</option>
                   {% else %}
-                  <option data-val="0">No Priority</option>
-                  <option data-val="1" selected>Only Waterplate</option>
+                  <option data-val="0">Planter</option>
+                  <option data-val="1" selected>Waterplate</option>
                   {% endif %}
                 </select>
               </td>
