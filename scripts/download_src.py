@@ -7,16 +7,14 @@ from tectle.config import load_config_non_flask
 zip_name = '../business-automation-master.zip'
 zip_inner_dir = 'business-automation-master/'
 
-zip_dir = 'D:/business-automation/release versions/version to upload/business-automation-master/'
 unzip_dir_parent = '../temp/'
 unzip_dir = '../temp/business-automation-master'
 to_copy_dir = '../to copy/'
-final_zip_name = 'D:/business-automation/release versions/version to upload/business-automation-master'
 base_dir = 'business-automation-master/'
 
 def get_prod_script():
     prod_zip_name = '../prod script.zip'
-    delete_dir(prod_zip_name)
+    delete_file(prod_zip_name, ignore=True)
     config = load_config_non_flask()
     url = config['PROD_SCRIPT']
     headers = {}
@@ -38,19 +36,21 @@ def get_prod_script():
         #shutil.copytree(unzip_dir, to_copy_dir)
     except OSError as e:
         print ("Error: %s - %s." % (e.filename, e.strerror))
-    delete_dir(prod_zip_name)
+    delete_file(prod_zip_name)
 
-def delete_dir(dir_name):
+def delete_dir(dir_name, ignore=False):
     try:
         shutil.rmtree(dir_name)
     except OSError as e:
-        print ("Error: %s - %s." % (e.filename, e.strerror))
+        if not ignore:
+            print ("Error: %s - %s." % (e.filename, e.strerror))
 
-def delete_file(filename):
+def delete_file(filename, ignore=False):
     try:
         os.remove(filename)
     except OSError as e:
-        print ("Error: %s - %s." % (e.filename, e.strerror))
+        if not ignore:
+            print ("Error: %s - %s." % (e.filename, e.strerror))
 
 def unzip():
     try:
@@ -141,9 +141,9 @@ def package_folder():
     remove_files(to_copy_dir, things_to_delete)
 
 def main():
-    delete_dir(unzip_dir_parent)
-    delete_dir(to_copy_dir)
-    delete_file(zip_name)
+    delete_dir(unzip_dir_parent, ignore=True)
+    delete_dir(to_copy_dir, ignore=True)
+    delete_file(zip_name, ignore=True)
     download_zip()
     unzip()
     delete_dir(unzip_dir_parent)

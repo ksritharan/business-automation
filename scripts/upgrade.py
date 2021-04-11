@@ -128,6 +128,47 @@ def upgrade(conn, cur, config):
             cur.executescript(query)
             conn.commit()
             new_version = 8
+        if version < 9:
+            # delete gcodes and printer_gcodes on next version
+            gcode_folder = config['GCODE_FOLDER']
+            query = """
+                CREATE TABLE file_manager (
+                    id                INTEGER PRIMARY KEY,
+                    filename          TEXT,
+                    date_modified     INTEGER,
+                    local_parent      TEXT,
+                    remote_path       TEXT
+                );
+                
+                CREATE TABLE printer_files (
+                    id                INTEGER PRIMARY KEY,
+                    file_manager_id   TEXT,
+                    filename          TEXT,
+                    printer_ip        TEXT,
+                    date_modified     INTEGER,
+                    remote_path       TEXT,
+                    progress          INTEGER DEFAULT 100,
+                    FOREIGN KEY (file_manager_id) REFERENCES file_manager(id)
+                );
+                
+                INSERT INTO file_manager (filename, date_modified, local_parent, remote_path)
+                SELECT filename,
+                       date_modified,
+                       "%s" as local_parent,
+                       "gcodes\" as remote_path
+                  FROM gcodes;
+                  
+                INSERT INTO printer_files (file_manager_id, filename, printer_ip, date_modified, remote_path)
+                SELECT fm.id as file_manager_id,
+                       pg.filename,
+                       pg.printer_ip,
+                       pg.date_modified,
+                       fm.remote_path
+                  FROM printer_gcodes pg
+                  JOIN file_manager fm ON pg.filename = fm.filename;
+            """ % gcode_folder
+            cur.executescript(query)
+            new_version = 9
             
     except Exception as e:
         conn.rollback()
@@ -139,7 +180,10 @@ def upgrade(conn, cur, config):
             conn.commit()
             print('Updated to version %s' % new_version)
         except:
-            pass
+            conn.rollback()
+            print('Failed to update please re-run')
+    else:
+        print('DB Version %s' % version)
 
 def get_version(cur):
     query = """

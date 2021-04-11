@@ -9,17 +9,20 @@ import threading
 from time import sleep
 
 logging.config.fileConfig('logging.conf')
+logger = logging.getLogger()
 
 app = Flask(__name__)
 
 app.secret_key = b'\x81/\xc9$\xd7\xd6\xe8\x0b\xf1e\x01\x10I\xba\xedq'
-app.config_loaded = False
+app.loaded_for_useragent = {}
 
 @app.before_request
 def before_request_func():
-    if not app.config_loaded:
-        load_config(force=True)
-        app.config_loaded = True
+    if 'User-Agent' in request.headers:
+        useragent = request.headers['User-Agent']
+        if useragent not in app.loaded_for_useragent:
+            app.loaded_for_useragent[useragent] = True
+            load_config(force=True)
 
 @app.after_request
 def add_header(r):
@@ -49,17 +52,21 @@ def printers_remove():
     printer_id = request.form.get('printer_id')
     return do_remove_printers(printer_id)
 
-@app.route('/printer/color', methods=['POST'])
+@app.route('/printers/color', methods=['POST'])
 def printer_color():
     printer_id = request.form.get('printerId')
     color = request.form.get('color')
     return do_color_printers(printer_id, color)
 
-@app.route('/printer/waterplate', methods=['POST'])
+@app.route('/printers/waterplate', methods=['POST'])
 def printer_waterplate():
     printer_id = request.form.get('printerId')
     waterplate_only = int(request.form.get('waterplateOnly'))
     return do_waterplate_printers(printer_id, waterplate_only)
+
+@app.route('/printers/system/update')
+def printer_system_update():
+    return do_update_system_files()
     
 @app.route('/db')
 def db_info():
@@ -305,7 +312,6 @@ def worker_thread():
         sleep(sleep_interval)
     
 if __name__ == '__main__':
-    config_loaded = False
     threading.Thread(target=worker_thread, daemon=True).start()
     from waitress import serve
     serve(app, host="127.0.0.1", port=8080, threads=16)
