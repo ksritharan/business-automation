@@ -125,7 +125,7 @@ def upgrade(conn, cur, config):
                 UPDATE inventory SET sku = REPLACE(sku, 'SK', 'SB');
                 UPDATE printer_queue SET sku = REPLACE(sku, 'SK', 'SB');
             """
-            cur.execute(query)
+            cur.executescript(query)
             conn.commit()
             new_version = 8
             
