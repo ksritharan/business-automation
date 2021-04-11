@@ -95,6 +95,28 @@ def upgrade(conn, cur, config):
             cur.executescript(query)
             conn.commit()
             new_version = 6
+        if version < 7:
+            query = """
+                UPDATE colors SET color_abbr = 'SK', color = 'Sky Blue' WHERE color = 'Blue';
+                UPDATE printers SET color = 'Sky Blue' WHERE color = 'Blue';
+                UPDATE products SET sku = REPLACE(sku, 'BT', 'SK'), color = 'Sky Blue' WHERE color = 'Blue';
+                UPDATE receipt_packages SET sku = REPLACE(sku, 'BT', 'SK');
+                UPDATE inventory SET sku = REPLACE(sku, 'BT', 'SK');
+                UPDATE printer_queue SET sku = REPLACE(sku, 'BT', 'SK');
+                
+                
+                UPDATE colors SET color_abbr = 'BK' WHERE color = 'Black';
+                UPDATE products SET sku = REPLACE(sku, 'KT', 'BK');
+                UPDATE receipt_packages SET sku = REPLACE(sku, 'KT', 'BK');
+                UPDATE inventory SET sku = REPLACE(sku, 'KT', 'BK');
+                UPDATE printer_queue SET sku = REPLACE(sku, 'KT', 'BK');
+                
+                DELETE FROM colors WHERE color = 'Red';
+                UPDATE printers SET color = 'White' WHERE color = 'Red';
+            """
+            cur.executescript(query)
+            conn.commit()
+            new_version = 7
             
     except Exception as e:
         conn.rollback()

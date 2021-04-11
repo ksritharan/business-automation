@@ -212,7 +212,7 @@
     
     }
     function updatePrinterWaterplate(printerId) {
-      var waterplateOnly = $("#1-edit-input-waterplate option:selected").attr("data-val");
+      var waterplateOnly = $("#"+printerId+"-edit-input-waterplate option:selected").attr("data-val");
       sendUpdatePrinterWaterplateRequest(printerId, waterplateOnly);
     }
     function sendUpdatePrinterWaterplateRequest(printerId, waterplateOnly) {
