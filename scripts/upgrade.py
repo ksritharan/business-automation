@@ -169,7 +169,24 @@ def upgrade(conn, cur, config):
             """ % gcode_folder
             cur.executescript(query)
             new_version = 9
-            
+        if version < 10:
+            query = """
+                CREATE TABLE filament_inventory (
+                    id                INTEGER PRIMARY KEY,
+                    color             TEXT,
+                    weight_kg         REAL DEFAULT 0
+                );
+                INSERT INTO filament_inventory (color)
+                SELECT color
+                  FROM colors;
+                
+                ALTER TABLE boxes ADD COLUMN quantity INTEGER DEFAULT 0;
+
+                ALTER TABLE products ADD COLUMN print_time INTEGER DEFAULT 0;
+                ALTER TABLE products ADD COLUMN filament_weight_kg REAL DEFAULT 0;
+            """
+            cur.executescript(query)
+            new_version = 10
     except Exception as e:
         conn.rollback()
         print(e)

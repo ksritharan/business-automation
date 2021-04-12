@@ -40,6 +40,9 @@
           <h5>Weight (kg)</h5>
         </td>
         <td>
+          <h5>Quantity</h5>
+        </td>
+        <td>
         </td>
         <td>
         </td>
@@ -73,6 +76,11 @@
         </td>
         <td>
           {{ box.weight_kg }}
+        </td>
+        <td>
+          <div class="form-group">
+            <input class="form-input form-val small-input input-sm" key="qty" oninput="sendEditQty('{{ box.id }}', this)" id="edit-input-qty" type="number" min="0" step="1" value="{{ box.quantity }}">
+          </div>
         </td>
       <td>
         <input id="{{ box.id }}-input-id" type="hidden" value="{{ box.id }}">

@@ -125,11 +125,11 @@ def inventory2(strategy):
     
 @app.route('/inventory/add', methods=['POST'])
 def add_inventory():
-    inv_data = {
+    form_data = {
         'sku': request.form.get('sku', ''),
         'quantity': request.form.get('quantity', 0)
     }
-    return do_add_items(inv_data)
+    return do_add_items(form_data)
 
 @app.route('/inventory/random', methods=['POST'])
 def random_add():
@@ -137,11 +137,11 @@ def random_add():
     
 @app.route('/inventory/edit', methods=['POST'])
 def edit_inventory():
-    inv_data = {
+    form_data = {
         'sku': request.form.get('sku', ''),
         'quantity': request.form.get('quantity', 0),
     }
-    return do_edit_items(inv_data)
+    return do_edit_items(form_data)
 
 @app.route('/manifest/create', methods=['POST'])
 def create_manifest():
@@ -154,7 +154,7 @@ def boxes():
 
 @app.route('/boxes/add', methods=['POST'])
 def add_boxes():
-    box_data = {
+    form_data = {
         'type': request.form.get('type', ''),
         'length_cm': request.form.get('length_cm', ''),
         'width_cm': request.form.get('width_cm', ''),
@@ -165,11 +165,11 @@ def add_boxes():
         'cost': request.form.get('cost', ''),
         'weight_kg': request.form.get('weight_kg', '')
     }
-    return do_add_boxes(box_data)
+    return do_add_boxes(form_data)
 
 @app.route('/boxes/edit', methods=['POST'])
 def edit_boxes():
-    box_data = {
+    form_data = {
         'id': request.form.get('id', ''),
         'type': request.form.get('type', ''),
         'length_cm': request.form.get('length_cm', ''),
@@ -181,7 +181,7 @@ def edit_boxes():
         'cost': request.form.get('cost', ''),
         'weight_kg': request.form.get('weight_kg', '')
     }
-    return do_edit_boxes(box_data)
+    return do_edit_boxes(form_data)
 
 @app.route('/boxes/remove', methods=['POST'])
 def remove_boxes():
@@ -191,6 +191,14 @@ def remove_boxes():
 @app.route('/boxes/shipping', methods=['POST'])
 def shipping_costs():
     return do_shipping_costs()
+
+@app.route('/boxes/inventory/edit', methods=['POST'])
+def box_inventory():
+    form_data = {
+        'id': request.form.get('id', ''),
+        'quantity': request.form.get('quantity', 0),
+    }
+    return do_edit_box_inventory(form_data)
     
 @app.route('/orders/<string:manifest>')
 def orders_manifest2(manifest):
@@ -212,28 +220,52 @@ def edit_products():
 
 @app.route('/products/class/add', methods=['POST'])
 def add_class():
-    class_data = {
+    form_data = {
         'class': request.form.get('class', ''),
         'weight_kg': request.form.get('weight_kg', ''),
         'cost': request.form.get('cost', '')
     }
-    return do_add_class(class_data)
+    return do_add_class(form_data)
 
 @app.route('/products/class/edit', methods=['POST'])
 def edit_class():
-    class_data = {
+    form_data = {
         'id': request.form.get('id', ''),
         'class': request.form.get('class', ''),
         'weight_kg': request.form.get('weight_kg', ''),
         'cost': request.form.get('cost', '')
     }
-    return do_edit_class(class_data)
+    return do_edit_class(form_data)
 
 @app.route('/products/class/remove', methods=['POST'])
 def remove_class():
     class_id = request.form.get('id', '')
     return do_remove_class(class_id)
 
+@app.route('/filament/edit', methods=['POST'])
+def edit_filament():
+    form_data = {
+        'color': request.form.get('color', ''),
+        'weight_kg': request.form.get('weight_kg', 0),
+    }
+    return do_edit_filament(form_data)
+
+@app.route('/products/weight/edit', methods=['POST'])
+def edit_product_weight():
+    form_data = {
+        'sku': request.form.get('sku', ''),
+        'filament_weight_kg': request.form.get('filament_weight_kg', '')
+    }
+    return do_edit_product_weight(form_data)
+
+@app.route('/products/print-time/edit', methods=['POST'])
+def edit_product_print_time():
+    form_data = {
+        'sku': request.form.get('sku', ''),
+        'increment': request.form.get('increment', 0)
+    }
+    return do_edit_product_print_time(form_data)
+    
 @app.route('/packaging/')
 def packaging():
     return do_packaging()
@@ -279,7 +311,7 @@ def printer_fileinfo(printer_ip):
 @app.route('/etsy')
 def etsy():
     return do_etsy()
-@app.route('/etsy_callback')
+@app.route('/etsy-callback')
 def etsy_callback():
     return do_etsy_callback(request)
 

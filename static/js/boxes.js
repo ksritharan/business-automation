@@ -133,3 +133,33 @@ function updateShipping() {
   }
   xhr.send();
 }
+
+function sendEditQty(id, input) {
+  var quantity = $(input).val();
+  
+  if (quantity != '') {
+    var data = {
+      'id': id,
+      'quantity': parseInt(quantity)
+    };
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/boxes/inventory/edit', true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() { // Call a function when the state changes.
+      if (this.readyState === XMLHttpRequest.DONE) {
+        if (this.status === 200) {
+          $(input).addClass("is-success");
+          setTimeout(function() {
+            $(input).removeClass("is-success");
+          }, 300);
+          
+        }
+        else {
+          alert('Error editing boxes\nquantity: '+quantity+'\n'+this.responseText);
+        }
+      }
+    }
+    xhr.send($.param(data));
+  }
+}

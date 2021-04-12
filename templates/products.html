@@ -51,6 +51,34 @@
     {% endfor %}
   </table>
   <br />
+  <h4 class="noselect page-title">Filaments
+  </h4>
+  <div class="divider" ></div>
+  <table class="data-table noselect">
+    <thead>
+      <tr>
+        <td>
+          <h5>Color</h5>
+        </td>
+        <td>
+          <h5>Weight (kg)</h5>
+        </td>
+      </tr>
+    </thead>
+    {% for filament in filament_inventory %}
+    <tr>
+      <td>
+        {{ filament.color }}
+      </td>
+      <td>
+        <div class="form-group">
+          <input class="form-input form-val small-input input-sm" key="weight" oninput="sendEditWeight('{{ filament.color }}', this)" id="edit-input-weight" type="number" min="0" step="0.001" value="{{ filament.weight_kg }}">
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  <br />
   <h4 class="page-title">Products
   </h4>
   <div class="divider" ></div>
@@ -83,6 +111,12 @@
         </td>
         <td>
           <h5>Quantity</h5>
+        </td>
+        <td>
+          <h5>Filament Weight (kg)</h5>
+        </td>
+        <td>
+          <h5>Print Time</h5>
         </td>
       </tr>
     </thead>
@@ -123,12 +157,26 @@
           </select>
         </div>
         {% endif %}
-     </td>
+      </td>
       <td>
         <div class="form-group">
           <input class="form-input form-val small-input input-sm" key="qty" oninput="sendEditQty('{{ product.sku }}', this)" id="add-input-qty" type="number" min="0" step="1" value="{{ product.quantity }}">
         </div>
-     </td>
+      </td>
+      <td>
+        <div class="form-group">
+          <input class="form-input form-val small-input input-sm" key="weight" oninput="sendEditProductWeight('{{ product.sku }}', this)" id="edit-product-weight" type="number" min="0" step="0.001" value="{{ product.filament_weight_kg }}">
+        </div>
+      </td>
+      <td>
+        <div class="form-group">
+          <input class="form-input form-val small-input input-sm" style="width: 45px" key="hours" oninput="sendEditPrintTime('H','{{ product.sku }}', this)" id="edit-product-weight" type="number" min="0" max="100" step="1" value="{{ product.print_time_hours }}" old-value="{{ product.print_time_hours }}">
+          :
+          <input class="form-input form-val small-input input-sm" style="width: 45px" key="minutes" oninput="sendEditPrintTime('M','{{ product.sku }}', this)" id="edit-product-weight" type="number" min="0" max="59" step="1" value="{{ product.print_time_minutes }}" old-value="{{ product.print_time_minutes }}">
+          :
+          <input class="form-input form-val small-input input-sm" style="width: 45px" key="seconds" oninput="sendEditPrintTime('S','{{ product.sku }}', this)" id="edit-product-weight" type="number" min="0" max="59" step="1" value="{{ product.print_time_seconds }}" old-value="{{ product.print_time_seconds }}">
+        </div>
+      </td>
     </tr>
     {% endfor %}
   </table>
