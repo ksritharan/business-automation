@@ -187,6 +187,32 @@ def upgrade(conn, cur, config):
             """
             cur.executescript(query)
             new_version = 10
+            
+        if version < 11:
+            query = """
+                CREATE TABLE exceptions (
+                    id                INTEGER PRIMARY KEY,
+                    query             TEXT NOT NULL, /* must be a query that evaluates to COUNT(1) > 0 if error */
+                    message           TEXT NOT NULL, /* query allows for %s with the count amount as replacement */
+                    level             INTEGER DEFAULT 0, /* warning = 0, error = 1 */
+                    status            INTEGER DEFAULT 0 /* enabled = 0, disabled = 1 */
+                );
+                INSERT INTO exceptions (query, message, level, status)
+                VALUES ('SELECT COUNT(1) FROM filament_inventory WHERE weight_kg < 15 AND color = ''White'' ',
+                        'Low on White filament', 0, 0),
+                       ('SELECT COUNT(1) FROM filament_inventory WHERE weight_kg < 15 AND color = ''Sky Blue'' ',
+                        'Low on Sky Blue filament', 0, 0),
+                       ('SELECT COUNT(1) FROM filament_inventory WHERE weight_kg < 15 AND color = ''Black'' ',
+                        'Low on Black filament', 0, 0),  
+                       ('SELECT COUNT(1) FROM boxes WHERE quantity < 20 AND type = ''A'' ',
+                        'Low on Box A', 0, 0),
+                       ('SELECT COUNT(1) FROM boxes WHERE quantity < 20 AND type = ''B'' ',
+                        'Low on Box B', 0, 0),
+                       ('SELECT COUNT(1) FROM boxes WHERE quantity < 20 AND type = ''C'' ',
+                        'Low on Box C', 0, 0);
+            """
+            cur.executescript(query)
+            new_version = 11
     except Exception as e:
         conn.rollback()
         print(e)

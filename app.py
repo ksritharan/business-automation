@@ -282,6 +282,27 @@ def edit_packaging():
 def remove_packaging():
     package_id = request.form.get('id', '')
     return do_remove_packaging(package_id)
+
+@app.route('/exceptions/')
+def exceptions():
+    return do_exceptions()
+    
+@app.route('/exceptions/level/edit', methods=['POST'])
+def edit_exception_level():
+    form_data = {
+        'id': request.form.get('id', ''),
+        'level': request.form.get('level', '')
+    }
+    return do_edit_exception_level(form_data)
+    
+@app.route('/exceptions/status/edit', methods=['POST'])
+def edit_exception_status():
+    form_data = {
+        'id': request.form.get('id', ''),
+        'status': request.form.get('status', '')
+    }
+    return do_edit_exception_status(form_data)
+    
 # "fake printer"
 
 @app.route('/printer/<string:printer_ip>/rr_status')

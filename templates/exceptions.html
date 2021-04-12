@@ -1,0 +1,83 @@
+{% extends "main.html" %}
+{% block content %}
+<script src="/static/jquery/jquery-3.5.1.min.js"></script>
+<script src="/static/jquery-ui/jquery-ui.min.js"></script>
+<div style="overflow-x: scroll; height: 100%">
+  {% if exceptions is defined %}
+    <div class="exception-toasts" style="margin-top: 0.4em; width: 90%;">
+    <h4 class="noselect page-title">Exceptions</h4>
+    {% for exception in exceptions %}
+      {% if exception.level == 0 %}
+      <div class="toast toast-warning" style="margin-top: 0.1em">
+        <button class="btn btn-clear float-right" onclick="$(this).parent().fadeOut(300)"></button>
+        {{ exception.message }}
+      </div>
+      {% else %}
+      <div class="toast toast-error" style="margin-top: 0.1em">
+        <button class="btn btn-clear float-right" onclick="$(this).parent().fadeOut(300)"></button>
+        {{ exception.message }}
+      </div>
+      {% endif %}
+    {% endfor %}
+    </div>
+  {% endif %}
+  <br />
+  <h4 class="noselect page-title">Edit Exceptions</h4>
+  <div class="divider" ></div>
+  <table class="data-table noselect">
+    <thead>
+      <tr>
+        <td>
+          <h5>Query</h5>
+        </td>
+        <td>
+          <h5>Message</h5>
+        </td>
+        <td>
+          <h5>Error Level</h5>
+        </td>
+        <td>
+          <h5>Status</h5>
+        </td>
+      </tr>
+    </thead>
+    {% for exception in exception_rows %}
+    <tr>
+      <td>
+        {{ exception.query }}
+      </td>
+      <td>
+        {{ exception.message }}
+      </td>
+      <td>
+        <div class="form-group">
+          <select class="form-select" onchange="sendEditExceptionLevel({{ exception.id }}, this)">
+          {% for error_level in error_levels %}
+            {% if exception.level == error_level.level %}
+              <option data-val="{{ error_level.level }}" selected>{{ error_level.str }}</option>
+            {% else %}
+              <option data-val="{{ error_level.level }}">{{ error_level.str }}</option>
+            {% endif %}
+          {% endfor %}
+          </select>
+        </div>
+      </td>
+      <td>
+        <div class="form-group">
+          <label class="form-switch">
+            {% if exception.status == 0 %}
+            <input type="checkbox" onchange="sendEditExceptionStatus({{ exception.id }}, this)" checked>
+            {% else %}
+            <input type="checkbox" onchange="sendEditExceptionStatus({{ exception.id }}, this)">
+            {% endif %}
+            <i class="form-icon"></i>
+          </label>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  <br />
+
+<script src="/static/js/exceptions.js"></script>
+{% endblock %}

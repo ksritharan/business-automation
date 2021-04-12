@@ -73,6 +73,13 @@
                   {% endif %}
                     <a href="/printers">PRINTERS</a>
                   </li>
+                  {% if exceptions_page %}
+                  <li class="nav-item active">
+                  {% else %}
+                  <li class="nav-item">
+                  {% endif %}
+                    <a href="/exceptions">EXCEPTIONS</a>
+                  </li>
                   <!--
                   {% if db %}
                   <li class="nav-item active">
