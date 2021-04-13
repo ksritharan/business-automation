@@ -204,6 +204,10 @@ def box_inventory():
 def orders_manifest2(manifest):
     return do_orders(group_id=manifest)
 
+@app.route('/orders/tracking/<string:tracking_pin>')
+def orderinfo_by_tracking(tracking_pin):
+    return do_orderinfo_by_tracking(tracking_pin)
+
 @app.route('/orders/update', methods=['POST'])
 def update_orders():
     return do_update_orders()
@@ -367,4 +371,6 @@ def worker_thread():
 if __name__ == '__main__':
     threading.Thread(target=worker_thread, daemon=True).start()
     from waitress import serve
-    serve(app, host="127.0.0.1", port=8080, threads=16)
+    local_ip = get_local_ip()
+    print('%s:%s' % (local_ip, 80))
+    serve(app, host=local_ip, port=80, threads=16)

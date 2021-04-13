@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/static/css/spectre.css">
+    <link rel="stylesheet" href="/static/css/spectre-exp.css">
+    <link rel="stylesheet" href="/static/css/spectre-icons.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+    <link rel="manifest" href="/static/site.webmanifest">
+  </head>
+  <body>
+    <div class="container">
+      <div class="columns">
+        <div class="column col-12 content">
+          <script src="/static/jquery/jquery-3.5.1.min.js"></script>
+          <script src="/static/jquery-ui/jquery-ui.min.js"></script>
+              <br />
+            {% if order_info is not defined %}
+              <h6>Tracking Pin not found</h6>
+            {% else %}
+              <h5>Box Type: {{ order_info.box_type }}</h5>
+              <h5>Box Size: {{ order_info.length_cm }} cm by {{ order_info.width_cm }} cm by {{ order_info.height_cm }} cm</h5>
+              <table class="data-table noselect">
+                <thead>
+                  <tr>
+                    <td>
+                      <h5>SKU</h5>
+                    </td>
+                    <td>
+                      <h5>Category</h5>
+                    </td>
+                    <td>
+                      <h5>Quantity</h5>
+                    </td>
+                    <td>
+                      <h5>Description</h5>
+                    </td>
+                    <td>
+                      <h5>Image</h5>
+                    </td>
+                  </tr>
+                </thead>
+                {% for item in order_info.skus %}
+                <tr>
+                  <td>
+                    {{ item.sku }}
+                  </td>
+                  <td>
+                    {{ item.category }}
+                  </td>
+                  <td>
+                    {{ item.quantity }}
+                  </td>
+                  <td>
+                    {{ item.product_type }} {{ item.color }} {{ item.name }} {{ item.bottom }}
+                  </td>
+                  <td>
+                    {% if item.category == 'Planter' %}
+                    <img src="/static/img/sku images/{{ item.sku }}.jpeg" style="height: 150px" class="img-responsive">
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </table>
+              <br />
+            {% endif %}
+      </div>
+    </div>
+  </body>
+</html>
