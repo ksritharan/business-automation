@@ -204,8 +204,12 @@ def box_inventory():
 def orders_manifest2(manifest):
     return do_orders(group_id=manifest)
 
-@app.route('/orders/tracking/<string:tracking_pin>')
-def orderinfo_by_tracking(tracking_pin):
+@app.route('/orderinfo/')
+def orderinfo_by_tracking():
+    return do_orderinfo_by_tracking('0')
+    
+@app.route('/orderinfo/<string:tracking_pin>')
+def orderinfo_by_tracking2(tracking_pin):
     return do_orderinfo_by_tracking(tracking_pin)
 
 @app.route('/orders/update', methods=['POST'])
