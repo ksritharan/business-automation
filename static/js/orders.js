@@ -105,8 +105,7 @@ function openModalDelete(receiptId) {
 function closeModalDelete() {
   $("#modal-delete").removeClass("active");
 }
-function sendRemoveReceipt() {
-  var receiptId = $("#input-receipt-id").val();
+function sendRemoveReceipt(receiptId) {
   var xhr = new XMLHttpRequest();
   xhr.open('POST', '/orders/remove', true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");

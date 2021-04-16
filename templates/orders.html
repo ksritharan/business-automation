@@ -104,7 +104,7 @@
       </td>
       <td>
         {% if not receipt.label_url %}
-          <i class="icon icon-cross c-hand" onclick="openModalDelete('{{ receipt.receipt_id }}');"></i>
+          <i class="icon icon-cross c-hand" onclick="sendRemoveReceipt('{{ receipt.receipt_id }}');"></i>
         {% endif %}
       </td>
     </tr>
@@ -112,25 +112,6 @@
   </table>
 </div>
 
-<div class="modal modal-sm" id="modal-delete">
-  <a href="#close" class="modal-overlay" onClick="closeModalDelete();" aria-label="Close"></a>
-  <div class="modal-container">
-    <div class="modal-header">
-      <a href="#close" class="btn btn-clear float-right" onClick="closeModalDelete();" aria-label="Close"></a>
-      <div class="modal-title h5">Remove this receipt?</div>
-    </div>
-    <div class="modal-body">
-      <form>
-        <div class="form-group">
-          <input class="form-input" id="input-receipt-id" type="hidden">
-        </div>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-error" onClick="sendRemoveReceipt();">Remove</button><a class="btn btn-link" href="#close" onClick="closeModalDelete();" aria-label="Close">Close</a>
-    </div>
-  </div>
-</div>
 <input type="hidden" id="manifests" value="{{ manifests }}" />
 <script src="/static/js/orders.js"></script>
 {% endblock %}
