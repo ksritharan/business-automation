@@ -388,4 +388,6 @@ if __name__ == '__main__':
     from waitress import serve
     local_ip = get_local_ip()
     print('%s:%s' % (local_ip, 80))
+    import webbrowser
+    webbrowser.open('http://%s' % local_ip)
     serve(app, host=local_ip, port=80, threads=16)
