@@ -354,6 +354,9 @@ def get_open_receipts():
 @app.route('/receipts/<string:receipt_id>/transactions')
 def get_transactions(receipt_id):
     return do_transactions(receipt_id)
+@app.route('/listings/<string:listing_id>/products/<string:product_id>')
+def get_listing_product(listing_id, product_id):
+    return do_listing_product(listing_id, product_id)
 
 #webflow
 @app.route('/sites/orders')
