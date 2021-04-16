@@ -212,6 +212,14 @@ def orderinfo_by_tracking():
 def orderinfo_by_tracking2(tracking_pin):
     return do_orderinfo_by_tracking(tracking_pin)
 
+@app.route('/manifestinfo/')
+def manifestinfo_blank():
+    return do_manifestinfo(None)
+    
+@app.route('/manifestinfo/<string:ca_post_manifest_id>')
+def manifestinfo(ca_post_manifest_id):
+    return do_manifestinfo(ca_post_manifest_id)
+
 @app.route('/orders/update', methods=['POST'])
 def update_orders():
     return do_update_orders()

@@ -1,0 +1,175 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/static/css/spectre.css">
+    <link rel="stylesheet" href="/static/css/spectre-exp.css">
+    <link rel="stylesheet" href="/static/css/spectre-icons.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+    <link rel="manifest" href="/static/site.webmanifest">
+  </head>
+  <body>
+    <div class="container">
+      <div class="columns">
+        <div class="column col-auto content">
+          <center>
+          <script src="/static/jquery/jquery-3.5.1.min.js"></script>
+          <script src="/static/jquery-ui/jquery-ui.min.js"></script>
+            {% if manifest_info is not defined %}
+              <br />
+              <h6>Manifest not found</h6>
+            {% else %}
+              <center><h4>Manifest Summary</h4></center>
+              <div class="columns">
+                <div class="column col-auto content">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <td>
+                          <h5>Box Type</h5>
+                        </td>
+                        <td>
+                          <h5>Dimensions</h5>
+                        </td>
+                        <td>
+                          <h5>Quantity</h5>
+                        </td>
+                      </tr>
+                    </thead>
+                    {% for box in box_info %}
+                    <tr>
+                      <td>{{ box.box_type }}</td>
+                      <td>{{ box.length_in }} in by {{ box.width_in }} in by {{ box.height_in }} in</td>
+                      <td>{{ box.quantity }}</td>
+                    </tr>
+                    {% endfor %}
+                  </table>
+                </div>
+                <div class="column col-auto content">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <td>
+                          <h5>SKU</h5>
+                        </td>
+                        <td>
+                          <h5>Description</h5>
+                        </td>
+                        <td>
+                          <h5>Image</h5>
+                        </td>
+                        <td>
+                          <h5>Quantity</h5>
+                        </td>
+                      </tr>
+                    </thead>
+                    {% for item in sku_info %}
+                    <tr>
+                      <td>
+                        {{ item.sku }}
+                      </td>
+                      <td>
+                        {{ item.product_type }} {{ item.color }} {{ item.name }} {{ item.bottom }}
+                      </td>
+                      <td>
+                        {% if item.category == 'Planter' %}
+                        <img src="/static/img/sku images/{{ item.sku }}.jpeg" style="height: 50px" class="img-responsive">
+                        {% endif %}
+                      </td>
+                      <td>
+                        {{ item.quantity }}
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </table>
+                </div>
+              </div>
+              <br />
+              {% for country_type in manifest_info['keys'] %}
+                <center><h4>{{ country_type }} Summary</h4></center>
+                <table class="data-table">
+                  <thead>
+                    <td>
+                      <b>Receipt ID</b>
+                    </td>
+                    <td>
+                      <b>Name</b>
+                    </td>
+                    <td>
+                      <b>Country</b>
+                    </td>
+                    <td>
+                      <b>Tracking Number</b>
+                    </td>
+                    <td>
+                      <b>Box Type</b>
+                    </td>
+                    <td>
+                      <b>Box Dimensions</b>
+                    </td>
+                    <td>
+                      <b>SKU</b>
+                    </td>
+                    <td>
+                      <b>Description</b>
+                    </td>
+                    <td>
+                      <b>Image</b>
+                    </td>
+                    <td>
+                      <b>Quantity</b>
+                    </td>
+                  </thead>
+                  {% for receipt_id in manifest_info[country_type]['keys'] %}
+                  <tr>
+                    <td rowspan={{ manifest_info[country_type][receipt_id].num_rows}}>{{ receipt_id }}</td>
+                    <td rowspan={{ manifest_info[country_type][receipt_id].num_rows}}>{{ manifest_info[country_type][receipt_id].recipient_name }}</td>
+                    <td rowspan={{ manifest_info[country_type][receipt_id].num_rows}}>{{ manifest_info[country_type][receipt_id].country }}</td>
+                    {% for package_id in manifest_info[country_type][receipt_id]['keys'] %}
+                    <td rowspan={{ manifest_info[country_type][receipt_id][package_id].num_rows}}>
+                      <a href="/orderinfo/{{ manifest_info[country_type][receipt_id][package_id].tracking_pin }}">{{ manifest_info[country_type][receipt_id][package_id].tracking_pin }}</a>
+                    </td>
+                    <td rowspan={{ manifest_info[country_type][receipt_id][package_id].num_rows}}>
+                      {{ manifest_info[country_type][receipt_id][package_id].box_type }}
+                    </td>
+                    <td rowspan={{ manifest_info[country_type][receipt_id][package_id].num_rows}}>
+                      {{ manifest_info[country_type][receipt_id][package_id].length_in }} in by {{ manifest_info[country_type][receipt_id][package_id].width_in }} in by {{ manifest_info[country_type][receipt_id][package_id].height_in }} in
+                    </td>
+                      {% for item in manifest_info[country_type][receipt_id][package_id].skus %}
+                    <td>
+                      {{ item.sku }}
+                    </td>
+                    <td>
+                      {{ item.product_type }} {{ item.color }} {{ item.name }} {{ item.bottom }}
+                    </td>
+                    <td>
+                      {% if item.category == 'Planter' %}
+                      <img src="/static/img/sku images/{{ item.sku }}.jpeg" style="height: 50px" class="img-responsive">
+                      {% endif %}
+                    </td>
+                    <td>
+                      {{ item.quantity }}
+                    </td>
+                  </tr>
+                        {% if loop.nextitem is defined %}
+                  <tr>
+                        {% endif %}
+                      {% endfor %}
+                      {% if loop.nextitem is defined %}
+                  </tr>
+                  <tr>
+                      {% endif %}
+                    {% endfor %}
+                  </tr>
+                  {% endfor %}
+                </table>
+                <br />
+              {% endfor %}
+            {% endif %}
+        </center>
+      </div>
+    </div>
+  </body>
+  <script src="/static/js/scanner.js"></script>
+</html>

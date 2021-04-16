@@ -20,21 +20,18 @@
               <h6>Tracking Pin not found</h6>
             {% else %}
               <h5>Box Type: {{ order_info.box_type }}</h5>
-              <h5>Box Size: {{ order_info.length_cm }} cm by {{ order_info.width_cm }} cm by {{ order_info.height_cm }} cm</h5>
-              <table class="data-table noselect">
+              <h5>Box Size: {{ order_info.length_in }} in by {{ order_info.width_in }} in by {{ order_info.height_in }} in</h5>
+              <table class="data-table">
                 <thead>
                   <tr>
                     <td>
                       <h5>SKU</h5>
                     </td>
                     <td>
-                      <h5>Category</h5>
+                      <h5>Description</h5>
                     </td>
                     <td>
                       <h5>Quantity</h5>
-                    </td>
-                    <td>
-                      <h5>Description</h5>
                     </td>
                     <td>
                       <h5>Image</h5>
@@ -47,13 +44,10 @@
                     {{ item.sku }}
                   </td>
                   <td>
-                    {{ item.category }}
+                    {{ item.product_type }} {{ item.color }} {{ item.name }} {{ item.bottom }}
                   </td>
                   <td>
                     {{ item.quantity }}
-                  </td>
-                  <td>
-                    {{ item.product_type }} {{ item.color }} {{ item.name }} {{ item.bottom }}
                   </td>
                   <td>
                     {% if item.category == 'Planter' %}
@@ -68,5 +62,5 @@
       </div>
     </div>
   </body>
-  <script src="/static/js/orderinfo.js"></script>
+  <script src="/static/js/scanner.js"></script>
 </html>
