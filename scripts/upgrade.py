@@ -213,6 +213,12 @@ def upgrade(conn, cur, config):
             """
             cur.executescript(query)
             new_version = 11
+        if version < 12:
+            query = """
+                ALTER TABLE manifest_links ADD COLUMN po_number TEXT;
+            """
+            cur.executescript(query)
+            new_version = 12
     except Exception as e:
         conn.rollback()
         print(e)
