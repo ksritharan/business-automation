@@ -20,6 +20,8 @@
               <br />
               <h6>Manifest not found</h6>
             {% else %}
+              <br />
+              <br />
               <center><h4>Manifest Summary</h4></center>
               <div class="columns">
                 <div class="column col-auto content">
@@ -74,7 +76,16 @@
                       </td>
                       <td>
                         {% if item.category == 'Planter' %}
-                        <img src="/static/img/sku images/{{ item.sku }}.jpeg" style="height: 50px" class="img-responsive">
+                        <div class="popover popover-left">
+                          <img src="/static/img/sku images/{{ item.sku }}.jpeg" style="height: 50px" class="img-responsive">
+                          <div class="popover-container">
+                            <div class="card">
+                              <div class="card-body">
+                              <img src="/static/img/sku images/{{ item.sku }}.jpeg" style="height: 300px" class="img-responsive">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                         {% endif %}
                       </td>
                       <td>
@@ -145,7 +156,16 @@
                     </td>
                     <td>
                       {% if item.category == 'Planter' %}
-                      <img src="/static/img/sku images/{{ item.sku }}.jpeg" style="height: 50px" class="img-responsive">
+                      <div class="popover popover-left">
+                        <img src="/static/img/sku images/{{ item.sku }}.jpeg" style="height: 50px" class="img-responsive">
+                        <div class="popover-container">
+                          <div class="card">
+                            <div class="card-body">
+                            <img src="/static/img/sku images/{{ item.sku }}.jpeg" style="height: 300px" class="img-responsive">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                       {% endif %}
                     </td>
                     <td>
