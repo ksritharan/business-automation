@@ -82,6 +82,10 @@ def printer_video(printer_id):
 def db_info():
     return do_db_info()
     
+@app.route('/monitor/')
+def monitor():
+    return do_monitor()
+    
 @app.route('/queue/update', methods=['POST'])
 def queue_update():
     queue_item_id = request.form.get('itemId')
