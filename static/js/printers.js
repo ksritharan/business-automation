@@ -99,6 +99,29 @@ function sendUpdatePrinterWaterplateRequest(printerId, waterplateOnly) {
 
 }
 
+function sendUpdateRTSPRequest(input, printerId) {
+  var rtsp = $(input).val();
+  $(input).blur();
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/printers/rtsp', true);
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+  xhr.onreadystatechange = function() { // Call a function when the state changes.
+    if (this.readyState === XMLHttpRequest.DONE) {
+      if (this.status === 200) {
+          $(input).addClass("is-success");
+          setTimeout(function() {
+            $(input).removeClass("is-success");
+          }, 300);
+      }
+      else {
+        alert('Error edit printer rtsp url\n'+this.responseText);
+      }
+    }
+  }
+  xhr.send("printerId="+printerId+"&rtsp="+rtsp);
+
+}
+
 function updateSystemFiles() {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', '/printers/system/update', true);

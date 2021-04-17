@@ -63,10 +63,20 @@ def printer_waterplate():
     printer_id = request.form.get('printerId')
     waterplate_only = int(request.form.get('waterplateOnly'))
     return do_waterplate_printers(printer_id, waterplate_only)
+    
+@app.route('/printers/rtsp', methods=['POST'])
+def printer_rtsp():
+    printer_id = request.form.get('printerId')
+    rtsp = request.form.get('rtsp')
+    return do_rtsp_printers(printer_id, rtsp)
 
 @app.route('/printers/system/update')
 def printer_system_update():
     return do_update_system_files()
+
+@app.route('/videofeed/<int:printer_id>')
+def printer_video(printer_id):
+    return do_video_feed(printer_id)
     
 @app.route('/db')
 def db_info():

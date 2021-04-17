@@ -219,6 +219,12 @@ def upgrade(conn, cur, config):
             """
             cur.executescript(query)
             new_version = 12
+        if version < 13:
+            query = """
+                ALTER TABLE printers ADD COLUMN rtsp_url TEXT;
+            """
+            cur.executescript(query)
+            new_version = 13
     except Exception as e:
         conn.rollback()
         print(e)
