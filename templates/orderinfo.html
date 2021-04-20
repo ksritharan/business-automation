@@ -19,6 +19,9 @@
             {% if order_info is not defined %}
               <h6>Tracking Pin not found</h6>
             {% else %}
+              {% if returning_customer is defined %}
+                <h5>Returning Customer</h5>
+              {% endif %}
               <h5>Box Type: {{ order_info.box_type }}</h5>
               <h5>Box Size: {{ order_info.length_in }} in by {{ order_info.width_in }} in by {{ order_info.height_in }} in</h5>
               <table class="data-table">

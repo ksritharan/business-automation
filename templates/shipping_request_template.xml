@@ -67,7 +67,8 @@
             <on-delivery>true</on-delivery>
         </notification>
         <print-preferences>
-          <output-format>8.5x11</output-format>
+          <output-format>4x6</output-format>
+          <encoding>PDF</encoding>
         </print-preferences>
         <preferences>
             <show-packing-instructions>true</show-packing-instructions>
