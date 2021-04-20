@@ -8,6 +8,8 @@ import logging
 import logging.config
 import threading
 from time import sleep
+import os
+cwd = os.getcwd()
 
 logging.config.fileConfig('logging.conf')
 logger = logging.getLogger()
@@ -17,7 +19,7 @@ app = Flask(__name__)
 app.secret_key = b'\x81/\xc9$\xd7\xd6\xe8\x0b\xf1e\x01\x10I\xba\xedq'
 app.loaded_for_useragent = {}
 app.rtsp_streams = {}
-app.jpeg = TurboJPEG(r'turbojpeg.dll')
+app.jpeg = TurboJPEG(os.path.join(cwd,'turbojpeg.dll'))
 
 @app.before_request
 def before_request_func():
