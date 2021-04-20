@@ -2,7 +2,6 @@ from flask import Flask
 from flask import render_template, url_for, request, make_response
 from markupsafe import escape
 from tectle import *
-from turbojpeg import TurboJPEG
 
 import logging
 import logging.config
@@ -18,8 +17,6 @@ app = Flask(__name__)
 
 app.secret_key = b'\x81/\xc9$\xd7\xd6\xe8\x0b\xf1e\x01\x10I\xba\xedq'
 app.loaded_for_useragent = {}
-app.rtsp_streams = {}
-app.jpeg = TurboJPEG(os.path.join(cwd,'turbojpeg.dll'))
 
 @app.before_request
 def before_request_func():
@@ -74,28 +71,11 @@ def printer_waterplate():
 def printer_rtsp():
     printer_id = request.form.get('printerId')
     rtsp = request.form.get('rtsp')
-    edit_stream(app.rtsp_streams, printer_id, rtsp)
     return do_rtsp_printers(printer_id, rtsp)
 
 @app.route('/printers/system/update')
 def printer_system_update():
     return do_update_system_files()
-
-@app.route('/videofeed/<int:printer_id>')
-def printer_video(printer_id):
-    return do_video_feed(app.rtsp_streams.get(printer_id, None), app.jpeg)
-
-@app.route('/videofeed/start', methods=['POST'])
-def start_feeds():
-    logger.debug("RECEIVED START REQUEST")
-    start_streams(app.rtsp_streams)
-    return make_response('success', 200)
-
-@app.route('/videofeed/stop', methods=['POST'])
-def stop_feeds():
-    logger.debug("RECEIVED STOP REQUEST")
-    stop_streams(app.rtsp_streams)
-    return make_response('success', 200)
 
 @app.route('/db')
 def db_info():
@@ -417,7 +397,6 @@ def worker_thread():
 
 def setup():
     threading.Thread(target=worker_thread, daemon=True).start()
-    app.rtsp_streams = create_streams()
     
 if __name__ == '__main__':
     setup()

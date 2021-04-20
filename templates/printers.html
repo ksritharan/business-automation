@@ -87,10 +87,6 @@
               <td>RTSP URL:</td>
               <td><input class="form-input form-val" id="{{ printer.id }}-edit-input-rtsp" type="text" onchange="sendUpdateRTSPRequest(this, {{ printer.id }})" value="{{ printer.rtsp_url }}"/></td>
             </tr>
-            <tr>
-              <td>Video Feed</td>
-              <td><img src="/videofeed/{{ printer.id }}" width="200px"></td>
-            </tr>
           </table>
           <i class="icon icon-delete c-hand" onClick="openModalDelete({{ printer.id }});"></i>
           <br />
