@@ -8,7 +8,11 @@
         {% if data.country == 'US' %}
         <service-code>USA.TP</service-code>
         {% elif data.country == 'CA' %}
-        <service-code>DOM.EP</service-code>
+            {% if xpresspost %}
+            <service-code>DOM.XP</service-code>
+            {% else %}
+            <service-code>DOM.EP</service-code>
+            {% endif %}
         {% else %}
         <service-code>INT.TP</service-code>
         {% endif %}
