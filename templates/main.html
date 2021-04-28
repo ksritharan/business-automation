@@ -30,6 +30,22 @@
               <li class="nav-item">
               {% endif %}
                 <a href="/orders">ORDERS</a>
+                <ul class="nav">
+                  {% if orderinfo_page %}
+                  <li class="nav-item active">
+                  {% else %}
+                  <li class="nav-item">
+                  {% endif %}
+                    <a href="/orderinfo">ORDER INFO</a>
+                  </li>
+                  {% if manifestinfo_page %}
+                  <li class="nav-item active">
+                  {% else %}
+                  <li class="nav-item">
+                  {% endif %}
+                    <a href="/manifestinfo">MANIFEST INFO</a>
+                  </li>
+                </ul>
               </li>
               {% if home or orders %}
               <li class="nav-item">
