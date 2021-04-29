@@ -35,7 +35,11 @@
                     {{ item.sku }}
                   </td>
                   <td>
-                    {{ item.product_type }} {{ item.color }} {{ item.name }} {{ item.bottom }}
+                    {% if item.category == 'Planter' %}
+                      {{ item.product_type }} {{ item.color }} {{ item.name }} {{ item.bottom }}
+                    {% else %}
+                      {{ item.product_type }} {{ item.color }} {{ item.name }} {{ item.size }} inch
+                    {% endif %}
                   </td>
                   <td>
                     {{ item.quantity }}

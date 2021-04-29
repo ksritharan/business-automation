@@ -1,6 +1,6 @@
 $(document).ready( function() {
   $( ".form-select" ).change( function () {
-    location.replace("/inventory/" + $(this).children("option:selected").text());
+    location.replace("/fulfillable/" + $(this).children("option:selected").text());
   });
 });
 

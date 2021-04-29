@@ -127,13 +127,13 @@ def remove_order():
     receipt_id = request.form.get('receipt_id', '')
     return do_remove_receipt(receipt_id)
 
-@app.route('/inventory')
-def inventory():
-    return do_inventory()
+@app.route('/fulfillable')
+def fulfillable():
+    return do_fulfillable()
     
-@app.route('/inventory/<string:strategy>')
-def inventory2(strategy):
-    return do_inventory(strategy=strategy)
+@app.route('/fulfillable/<string:strategy>')
+def fulfillable2(strategy):
+    return do_fulfillable(strategy=strategy)
     
 @app.route('/inventory/add', methods=['POST'])
 def add_inventory():
