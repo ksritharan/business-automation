@@ -225,6 +225,21 @@ def upgrade(conn, cur, config):
             """
             cur.executescript(query)
             new_version = 13
+        if version < 14:
+            query = """
+                INSERT INTO colors (color, color_abbr)
+                VALUES ('Blue', 'BL'),
+                       ('Teal', 'TL'),
+                       ('Orange', 'OJ'),
+                       ('Yellow', 'YL');
+                INSERT INTO filament_inventory (color)
+                VALUES ('Blue'),
+                       ('Teal'),
+                       ('Orange'),
+                       ('Yellow');
+            """
+            cur.executescript(query)
+            new_version = 14
     except Exception as e:
         conn.rollback()
         print(e)
