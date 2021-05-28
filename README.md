@@ -29,6 +29,7 @@ To configure the application you will need to edit the app.config.
 app.config
 ```
 PDF_FOLDER = C:\Users\kavin\Documents\Receipts
+MAN_FOLDER = C:\Users\kavin\Documents\Manifests
 API_KEY = NOT_THE_REAL_API_KEY
 SHARED_SECRET = NOT_THE_REAL_SHARED_SECRET
 SHOP_ID = NOT_THE_REAL_SHOP_ID
@@ -37,7 +38,15 @@ PRINTER_DEBUG = True
 CP_AUTH_DEBUG = NOT_THE_REAL_CANADA_POST_BASIC_AUTH
 CP_AUTH = NOT_THE_REAL_CANADA_POST_BASIC_AUTH
 CP_SHOP = NOT_THE_REAL_CANADA_POST_SHOP
-SLEEP_INTERVAL = 0.5
+CP_CONTRACT = NOT_THE_REAL_CONTRACT_NUM
+WEBFLOW_SITE_ID = NOT_THE_REAL_WEBFLOW_ID
+WEBFLOW_TOKEN = NOT_THE_REAL_WEBFLOW_TOKEN
+SLEEP_INTERVAL = 0.1
+CP_INTERVAL = 0.5
+GCODE_FOLDER = C:\Users\kavin\Documents\gcode files
+PROD_SCRIPT = NOT_THE_REAL_PROD_SCRIPT_URL
+SYS_FOLDER = C:\Users\kavin\Documents\sys files
+VLC_LOCATION = C:\Program Files\VideoLAN\VLC\vlc.exe
 ```
 PDF_FOLDER is the location where the shipping label pdf will be sent to. You can use a hot folder monitor to print the PDF automatically.  
 API_KEY is the Etsy API key found on the developers API page.  
@@ -48,14 +57,23 @@ PRINTER_DEBUG is a flag when set to True will allow operators to investigate iss
 CP_AUTH_DEBUG is the base64 url safe encoded <username>:<password> of the development keys from the Canada Post API.  
 CP_AUTH is the base64 url safe encoded <username>:<password> of the production keys from the Canada Post API.  
 CP_SHOP is your Canada Post shop id.  
-SLEEP_INTERVAL is the amount of time in seconds between polling the printers' statuses using [Duet3D gcode M408 S0](https://duet3d.dozuki.com/Wiki/Gcode#Section_M408_Report_JSON_style_response).  
+CP_CONTRACT is your contract number from Canada Post
+WEBFLOW_SITE_ID is the Webflow site ID
+WEBFLOW_TOKEN is the authorization token from Webflow
+SLEEP_INTERVAL is the amount of time in seconds between polling the printers' statuses using [Duet3D gcode M408 S0](https://duet3d.dozuki.com/Wiki/Gcode#Section_M408_Report_JSON_style_response).
+CP_INTERVAL is the minimum delay between requests to Canada Post API. See their API rates to find the number to use.
+GCODE_FOLDER is the directory containing gcode files that will be uploaded, managed, and sent as requests to print on the Duet3D printers.
+PROD_SCRIPT is the remote location of production scripts.
+SYS_FOLDER is the directory containing system files that will be uploaded on the Duet3D printers.
+VLC_LOCATION is the location of VLC so that it can be streamed.
 
 ### Run
 Run the batch script run.bat which just runs the following:
 ```
 python/python.exe app.py
 ```
-Access the page at [127.0.0.1:8080](127.0.0.1:8080)
+Access the page at <your local ip>:<80>.
+The python code will open the page in your default browser.
 
 ## Features
 ### OAuth
