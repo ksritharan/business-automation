@@ -128,7 +128,7 @@ Here we can add, edit, and remove printers by URL. We can see their current stat
 
 ### Fulfillable
 In this section we determine what orders can be fulfilled depending on our current inventory. There are two policies that have been adopted and either can be used to select which orders are fulfilled. By prioritizing either fulfilling the oldest order first, or by fulfilling the most orders.
-![fulfillable_img](https://raw.githubusercontent.com/ksritharan/business-automation/master/screenshots/fulfillable.PNG)
+![fulfillable_img](https://raw.githubusercontent.com/ksritharan/business-automation/master/screenshots/fullfillable.PNG)
 
 ### Exceptions
 In this section we can create queries that will help notify us if there are any issues in the current state of the system.
