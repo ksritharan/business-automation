@@ -12,6 +12,10 @@
 &nbsp;&nbsp;[Products](#products)  
 &nbsp;&nbsp;[Boxes](#boxes)  
 &nbsp;&nbsp;[Packaging](#packaging)  
+&nbsp;&nbsp;[Printers](#printers)  
+&nbsp;&nbsp;[Fulfillable](#fulfillable)  
+&nbsp;&nbsp;[Exceptions](#exceptions)  
+&nbsp;&nbsp;[Monitor](#monitor)  
 
 
 ## About
@@ -80,10 +84,18 @@ The python code will open the page in your default browser.
 When loading the site for the first time you will be redirected to Etsy to confirm that the application can use its API to interact with your shop.
 ![oauth_img](https://raw.githubusercontent.com/ksritharan/business-automation/master/screenshots/etsy_login.PNG)
 ### Orders
-From the order mangement page we can fetch new orders, monitor their status, create shipping labels, and send tracking information back to Etsy.
+From the order mangement page we can fetch new orders, monitor their status, create shipping labels, and send tracking information back to Etsy or Webflow depending on where it came from.
 ![orders_img](https://raw.githubusercontent.com/ksritharan/business-automation/master/screenshots/manage_orders.PNG)
+#### Order Info
+Scanning a shipping label with a USB barcode scanner on this page will show the contents and box type. This helps determine what should go in the box.
+![orders1_img](https://raw.githubusercontent.com/ksritharan/business-automation/master/screenshots/manage_orders_1.PNG)
+#### Manifest Info
+To see what boxes and items are needed for a Canada Post delivery/pickup the PO number on the manifest can be scanned with a USB barcode scanner.
+![orders2_img](https://raw.githubusercontent.com/ksritharan/business-automation/master/screenshots/manage_orders_2.PNG)
+
 ### Queue
 From the queue management page we can see what items from the orders need to be printed. We can drag and drop items to a specific printer and start it to print the next item.
+A print request is sent to the printer, but first we check if the latest gcode file that needs to be printed matches the latest in our database for this printer, if not, we upload the gcode file.
 We can see the status of each of the prints and the availability of the printer. Once all the items for a receipt have been printed it is moved to the completed receipts column, and its status on the order management page will be updated to Printed.
 ![queue1_img](https://raw.githubusercontent.com/ksritharan/business-automation/master/screenshots/manage_printere_queue.PNG)
 ![queue2_img](https://raw.githubusercontent.com/ksritharan/business-automation/master/screenshots/manage_printere_queue_2.PNG)
@@ -113,3 +125,15 @@ Ding! Ding!
 ### Printers
 Here we can add, edit, and remove printers by URL. We can see their current status in the database (not realtime) and information about them.
 ![printers_img](https://raw.githubusercontent.com/ksritharan/business-automation/master/screenshots/printer_config.PNG)
+
+### Fulfillable
+In this section we determine what orders can be fulfilled depending on our current inventory. There are two policies that have been adopted and either can be used to select which orders are fulfilled. By prioritizing either fulfilling the oldest order first, or by fulfilling the most orders.
+![fulfillable_img](https://raw.githubusercontent.com/ksritharan/business-automation/master/screenshots/fulfillable.PNG)
+
+### Exceptions
+In this section we can create queries that will help notify us if there are any issues in the current state of the system.
+![fulfillable_img](https://raw.githubusercontent.com/ksritharan/business-automation/master/screenshots/exceptions.PNG)
+
+### Monitor
+Here we open a grid view of all the printers! Unfortunately, I'm not on site for this picture so you just see me!
+![fulfillable_img](https://raw.githubusercontent.com/ksritharan/business-automation/master/screenshots/monitor.PNG)
